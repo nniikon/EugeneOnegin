@@ -20,7 +20,7 @@ void deleteNonLetterCharacters(char* input, const char delim)
     const char ascii_Z = 90;
 
     size_t currentEmptySpace = 0;
-    for (int i = 0; input[i] != '\0'; i++)
+    for (int i = 0; input[i] != delim; i++)
     {
         //putc(input[i], stdout);
         if ((ascii_a <= input[i] && input[i] <= ascii_z) || (ascii_A <= input[i] && input[i] <= ascii_Z))
@@ -29,7 +29,7 @@ void deleteNonLetterCharacters(char* input, const char delim)
             currentEmptySpace++;
         }
     }
-    input[currentEmptySpace] = '\0';
+    input[currentEmptySpace] = delim;
 }
 
 
@@ -47,8 +47,10 @@ int compareLines(const void* str1, const void* str2)
     strncpy(strdup1, (*(const char**)str1), MAX_LINE_SIZE);
     strncpy(strdup2, (*(const char**)str2), MAX_LINE_SIZE);
 
+    //printf("st1: %s, str2: %s", strdup1, strdup2);
     deleteNonLetterCharacters(strdup1, '\n');
     deleteNonLetterCharacters(strdup2, '\n');
+    //printf("st1: %s, str2: %s", strdup1, strdup2);
     int  i = 0;
     for (i = 0; strdup1[i] != '\n'  && strdup2[i] != '\n' && strdup1[i] && strdup2[i]; i++)
     {
