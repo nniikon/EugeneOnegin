@@ -1,164 +1,81 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <assert.h>
-const char FILE_NAME[] = "EugeneOnegin.txt";
+#include "..\include\stringOperations.h"
+#include "..\include\test.h"
 
-char*  FileToBuffer(off_t size);
-void   printBuffer (const char* buffer,  size_t size);
-off_t  getFileSize (const char* fileName);
-void   deleteRepetitiveCharacters(char input[], const char chr);
-void   replaceCharacter          (char input[], const char dst, const char src);
-size_t nCharacterInString  (const char input[], const char chr);
-void   printLine           (const char* input);
+static const char* FILE_NAME = "EugeneOnegin.txt";
+
+//#define TEST
 
 
-/**
- * @brief Returns an array of pointer, each pointing to the start of a new line.
- * 
- * @param[in] buffer A buffer that needs to be parsed.
- * 
- * @param[in] delimiter A symbol that indicates a new line.
- * 
- * @return A pointer to an array of pointers, each pointing to the start of a new line, ending with NULL.
- * 
- * @note Don't forget to `free()` the given pointer
-*/
-char** parseBufferToLines(char buffer[], const char delimiter);
+static void swap(void* str1, void* str2, const size_t elemSize)
+{
+    void* temp = malloc(elemSize);
+    assert(temp);
 
+    memcpy(temp, str1, elemSize);
+    memcpy(str1, str2, elemSize);
+    memcpy(str2, temp, elemSize);
+}
+
+
+static void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
+{
+    size_t unsortedSize = arrSize;
+    for (size_t i = 0; i < arrSize; i++)
+    {
+        for (size_t j = 0; j < unsortedSize - 1; j++)
+        {
+            printf("\tBUBBLE_SORT: compare(%d, %d)\n", ((size_t)arr + j*elemSize), 
+                                                     ((size_t)arr + (j+1)*elemSize));
+            if (compare((void*)((size_t)arr + j*elemSize), 
+                        (void*)((size_t)arr + (j+1)*elemSize)) == 1)
+            {
+                swap((void*)((size_t)arr + j*elemSize), 
+                     (void*)((size_t)arr + (j+1)*elemSize), elemSize);
+            }
+        }
+        unsortedSize--;
+    }
+}
 
 int main()
 {
+    #ifdef TEST
+    testCompareString();
+    #else
+
     off_t size = getFileSize(FILE_NAME);
-    char* buffer = FileToBuffer(size);
+    char* buffer = FileToBuffer(size, FILE_NAME);
     
+
+    // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
     deleteRepetitiveCharacters(buffer, '\n');
+    size_t nLines = 0;
 
-    //printBuffer(buffer, size_t(size));
+    // Parse the buffer into the lines using \n as a delimiter.
+    char** text = parseBufferToLines(buffer, &nLines, '\n');
 
-    char** test = parseBufferToLines(buffer, '\n');
+    // buffer: <aaa \n bbb \n ccc \n asdasd \0 >
 
-    for (int i = 0; test[i]; i++)
-    {
-        printLine(test[i]);
-    }
-    
-}
-
-char* FileToBuffer(off_t size)
-{
-    char*  buf = (char*)calloc(size, sizeof(char));
-    assert(buf);
-
-    FILE  *file = fopen(FILE_NAME, "rb");
-    assert(file);
-
-    fread (buf, sizeof(char), size, file);
-
-    return buf;
-}
-
-
-off_t getFileSize(const char* fileName)
-{
-    struct stat bf;
-    stat(fileName, &bf);
-    return bf.st_size;
-}
-
-
-void printBuffer(const char* buffer, size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-    {
-        if(buffer[i] == '\0' || buffer[i] == '\n' || buffer[i] == '\r')
-            printf("%d ", buffer[i]);
-        else
-            printf("%c",  buffer[i]);
-    }
-    
-}
-
-// This function accepts a string and a character as input. 
-// It scans through the string and removes consecutive occurrences of the specified character.
-void deleteRepetitiveCharacters(char input[], const char chr)
-{
-    size_t currentEmptySpace = 0;
-
-    // Iterate through the input string.
-    for (size_t i = 0; input[i] != '\0'; ++i)
-    {
-        // If the current character is not the character to be deleted...
-        if (input[i] != chr || input[i + 1] != chr)
-        {
-            // ... move the current character to the position of the current "empty" space and increment it.
-            input[currentEmptySpace] = input[i];
-            currentEmptySpace++;
-        }
-    }
-
-    input[currentEmptySpace] = '\0';
-}
-
-
-void replaceCharacter(char input[], const char dst, const char src)
-{
-    for (int i = 0; input[i] != '\0'; i++)
-    {
-        if (input[i] == dst)
-        {
-            input[i] = src;
-        }  
-    }
-}
-
-
-size_t nCharacterInString(const char input[], const char chr)
-{
-    size_t counter = 0;
-    for (int i = 0; input[i] != '\0'; i++)
-    {
-        if (input[i] == chr)
-        {
-            counter++;
-        }
-    }
-    return counter;
-}
-
-char** parseBufferToLines(char buffer[], const char delimiter)
-{
-    size_t nLines = nCharacterInString(buffer, '\n') + (size_t) 1;
-
-    char** text = (char**) calloc(nLines + 1, sizeof(char*));
-    
     text[nLines] = NULL;
-
-    size_t line = 0;
-
-    text[line] = buffer;
-    line++;
-    for (int i = 0; buffer[i] != '\0'; i++)
-    {
-        if(buffer[i] == delimiter)
-        {
-            text[line] = buffer + i + 1;
-            line++;
-        }
-    }
     
-    return text;
-}
 
-
-void printLine(const char* input)
-{
-    assert(input);
-    for (int i = 0; input[i] != '\n' && input[i] != '\0'; i++)
+    for (int i = 0; text[i] != '\0'; i++)
     {
-        fputc(input[i], stdout);
+        printLine(text[i], '\n');
     }
-    fputc('\n', stdout);
+
+    puts("\nSorting\n");
+    bubbleSort((void*)(text), nLines, sizeof(char*), compareLines);
+
+    for (int i = 0; text[i]; i++)
+    {
+        printf("%u, text[%.2d] = ", size_t(text + i), i);
+        printLine(text[i], '\n');
+    }
+
+    free(text);
+    free(buffer);
+    #endif
+    
 }
