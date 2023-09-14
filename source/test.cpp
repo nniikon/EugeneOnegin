@@ -4,7 +4,7 @@ static void testSingleCompareString(const char* str1, const char* str2, int expe
 {
     int cmp = compareLines(str1, str2);
     if (cmp == expectedValue)
-        printf("TEST PASSED\n");
+        printf("%50s", "COMPARE STRING TEST PASSED\n");
     else
     {
         printf("TEST FAILED!!!\nSTR1 = <%s> \nSTR2 = <%s> \nresult: %d \nExpected: %d \n", 
@@ -36,5 +36,39 @@ void testCompareString()
     strncpy(str1, "aaaaaaaa", maxStrLength);
     strncpy(str2, "bbbbbbbb", maxStrLength);
     testSingleCompareString(str1, str2, -1);
+    
+}
+
+
+void testSorting(void (*sort)(void*, size_t, size_t, int (*cmp)(const void*, const void*)),
+                                                     int (*cmp)(const void*, const void*))
+{
+    srand(time(NULL));
+    const int arrSize = 15;
+    int qSortArr[arrSize];
+    int  sortArr[arrSize];
+    for (int i = 0; i < arrSize; i++)
+    {
+        qSortArr[i] = rand() % 100;
+        sortArr[i] = qSortArr[i];
+    }
+    qsort((void*)qSortArr, arrSize, sizeof(int), cmp);
+    sort ((void*) sortArr, arrSize, sizeof(int), cmp);
+
+    for (int i = 0; i < arrSize; i++)
+    {
+        if (qSortArr[i] != sortArr[i])
+        {
+            printf("SORTING TEST FAILED!!!\n");
+            for (int j = 0; j < arrSize; j++)
+            {
+                printf("qsort: %d, sort: %d\n", qSortArr[j], sortArr[j]);
+            }
+            return;
+        }
+        
+    }
+    
+    printf("%50s", "SORTING TEST PASSED\n");
     
 }

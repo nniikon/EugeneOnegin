@@ -3,7 +3,17 @@
 
 static const char* FILE_NAME = "EugeneOnegin.txt";
 
-//#define TEST
+#define TEST
+
+int compare_ints(const void* a, const void* b)
+{
+    int arg1 = *(const int*)a;
+    int arg2 = *(const int*)b;
+ 
+    if (arg1 < arg2) return -1;
+    if (arg1 > arg2) return  1;
+    return 0;
+}
 
 
 static void swap(void* str1, void* str2, const size_t elemSize)
@@ -24,8 +34,8 @@ static void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare
     {
         for (size_t j = 0; j < unsortedSize - 1; j++)
         {
-            printf("\tBUBBLE_SORT: compare(%d, %d)\n", ((size_t)arr + j*elemSize), 
-                                                     ((size_t)arr + (j+1)*elemSize));
+            //printf("\tBUBBLE_SORT: compare(%d, %d)\n", ((size_t)arr +   j  *elemSize), 
+            //                                           ((size_t)arr + (j+1)*elemSize));
             if (compare((void*)((size_t)arr + j*elemSize), 
                         (void*)((size_t)arr + (j+1)*elemSize)) == 1)
             {
@@ -41,6 +51,7 @@ int main()
 {
     #ifdef TEST
     testCompareString();
+    testSorting(bubbleSort, compare_ints);
     #else
 
     off_t size = getFileSize(FILE_NAME);

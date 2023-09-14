@@ -20,7 +20,7 @@ void deleteNonLetterCharacters(char* input, const char delim)
     const char ascii_Z = 90;
 
     size_t currentEmptySpace = 0;
-    for (int i = 0; input[i] != delim; i++)
+    for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
     {
         //putc(input[i], stdout);
         if ((ascii_a <= input[i] && input[i] <= ascii_z) || (ascii_A <= input[i] && input[i] <= ascii_Z))
@@ -32,6 +32,11 @@ void deleteNonLetterCharacters(char* input, const char delim)
     input[currentEmptySpace] = delim;
 }
 
+int comparePointersToLines(const void* pstr1, const void* pstr2)
+{
+    return compareLines(*(const char**)pstr1, *(const char**)pstr2);
+}
+
 
 int compareLines(const void* str1, const void* str2)
 {
@@ -40,12 +45,11 @@ int compareLines(const void* str1, const void* str2)
     // printLine((char*)str1, '\n');
     // printf("\t\t adress_2: %u", (size_t)str2);
     // printLine((char*)str2, '\n');
-
     char strdup1[MAX_LINE_SIZE] = "";
     char strdup2[MAX_LINE_SIZE] = "";
 
-    strncpy(strdup1, (*(const char**)str1), MAX_LINE_SIZE);
-    strncpy(strdup2, (*(const char**)str2), MAX_LINE_SIZE);
+    strncpy(strdup1, ((const char*)str1), MAX_LINE_SIZE);
+    strncpy(strdup2, ((const char*)str2), MAX_LINE_SIZE);
 
     //printf("st1: %s, str2: %s", strdup1, strdup2);
     deleteNonLetterCharacters(strdup1, '\n');
@@ -67,12 +71,12 @@ int compareLines(const void* str1, const void* str2)
         }
     }
     // If strdup1 and strdup2 are the same length.
-    if (strdup1[i] == '\0' && strdup2[i] == '\0')
+    if ((strdup1[i] == '\0' || strdup1[i] == '\n') && (strdup2[i] == '\0' || strdup2[i] == '\n'))
     {
         return 0;
     }
     // If strdup1 is shorter...
-    else if (strdup1[i] == '\0')
+    else if (strdup1[i] == '\0' || strdup1[i] == '\n')
     {
         return 1; // ... it goes first
     }

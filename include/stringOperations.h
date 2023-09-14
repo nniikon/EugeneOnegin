@@ -58,7 +58,7 @@ void replaceCharacter(char input[], const char dst, const char src);
 size_t nCharactersInString (const char input[], const char chr);
 
 /**
- * @brief Prints a string to the console and stops including the given delimiter.
+ * @brief Prints a string to the console and stops at the given delimiter.
  * 
  * @param[in] input The input string.
  * @param[in] delim The delimiter.
@@ -76,20 +76,20 @@ void  deleteNonLetterCharacters (char* input, const char delim);
 
 /**
  * @brief Compares two lines for alphabetical order.
+ * 
  * @param str1 First  string.
  * @param str2 Second string.
+ * 
  * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal. 
  */
 int compareLines(const void* str1, const void* str2);
-
+int comparePointersToLines(const void* pstr1, const void* pstr2);
 /**
  * @brief Returns an array of pointer, each pointing to the start of a new line.
  * 
- * @param[in]  buffer A buffer that needs to be parsed.
- * 
+ * @param[in]  buffer    A buffer that needs to be parsed.
  * @param[in]  delimiter A symbol that indicates a new line.
- * 
- * @param[out] nLines A number of lines in the buffer.
+ * @param[out] nLines    A number of lines in the buffer.
  * 
  * @return A pointer to an array of pointers, each pointing to the start of a new line, ending with NULL.
  * 
