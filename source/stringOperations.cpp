@@ -19,77 +19,23 @@ void deleteNonLetterCharacters(char* input, const char delim)
     const char ascii_A = 65;
     const char ascii_Z = 90;
 
-    size_t currentEmptySpace = 0;
-    for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
+    size_t readIndex = 0;
+    size_t writeIndex = 0;
+
+    while (input[readIndex] != '\0' && input[readIndex] != delim)
     {
-        //putc(input[i], stdout);
-        if ((ascii_a <= input[i] && input[i] <= ascii_z) || (ascii_A <= input[i] && input[i] <= ascii_Z))
+        if ((ascii_a <= input[readIndex] && input[readIndex] <= ascii_z) ||
+            (ascii_A <= input[readIndex] && input[readIndex] <= ascii_Z))
         {
-            input[currentEmptySpace] = input[i];
-            currentEmptySpace++;
+            input[writeIndex] = input[readIndex];
+            writeIndex++;
         }
-    }
-    input[currentEmptySpace] = delim;
-}
 
-int comparePointersToLines(const void* pstr1, const void* pstr2)
-{
-    return compareLines(*(const char**)pstr1, *(const char**)pstr2);
-}
-
-
-int compareLines(const void* str1, const void* str2)
-{
-    // printf("\t\t compareLines:\n");
-    // printf("\t\t adress_1: %u", (size_t)str1);
-    // printLine((char*)str1, '\n');
-    // printf("\t\t adress_2: %u", (size_t)str2);
-    // printLine((char*)str2, '\n');
-    char strdup1[MAX_LINE_SIZE] = "";
-    char strdup2[MAX_LINE_SIZE] = "";
-
-    strncpy(strdup1, ((const char*)str1), MAX_LINE_SIZE);
-    strncpy(strdup2, ((const char*)str2), MAX_LINE_SIZE);
-
-    //printf("st1: %s, str2: %s", strdup1, strdup2);
-    deleteNonLetterCharacters(strdup1, '\n');
-    deleteNonLetterCharacters(strdup2, '\n');
-    //printf("st1: %s, str2: %s", strdup1, strdup2);
-    int  i = 0;
-    for (i = 0; strdup1[i] != '\n'  && strdup2[i] != '\n' && strdup1[i] && strdup2[i]; i++)
-    {
-        // Ignore register to compare strings 
-        strdup1[i] = (char)tolower(strdup1[i]);
-        strdup2[i] = (char)tolower(strdup2[i]);
-        if (int(strdup1[i]) < int(strdup2[i]))
-        {
-            return -1;
-        }
-        else if (int(strdup1[i]) > int(strdup2[i]))
-        {
-            return 1;
-        }
+        readIndex++;
     }
-    // If strdup1 and strdup2 are the same length.
-    if ((strdup1[i] == '\0' || strdup1[i] == '\n') && (strdup2[i] == '\0' || strdup2[i] == '\n'))
-    {
-        return 0;
-    }
-    // If strdup1 is shorter...
-    else if (strdup1[i] == '\0' || strdup1[i] == '\n')
-    {
-        return 1; // ... it goes first
-    }
-    else
-    {
-        return -1;
-    }
-    
-    // Error
-    assert(0);
-    return -100;
-}
-    
+
+    input[writeIndex] = delim;
+}   
 
 
 char* FileToBuffer(off_t size, const char* FILE_NAME)
@@ -185,13 +131,18 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
     return text;
 }
 
-
-void printLine(const char* input, const char delim)
+size_t my_strlen(const char* input, const char delim)
 {
-    assert(input);
+    size_t i = 0;
+    for (i = 0; input[i] != delim && input[i] != '\0'; i++) {}
+    return i;
+}
+
+void printLineToFile(const char* input, const char delim, FILE* file)
+{
     for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
     {
-        fputc(input[i], stdout);
+        fputc(input[i], file);
     }
-    fputc('\n', stdout);
+    fputc('\n', file);
 }

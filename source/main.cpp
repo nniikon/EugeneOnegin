@@ -3,56 +3,21 @@
 
 static const char* FILE_NAME = "EugeneOnegin.txt";
 
-#define TEST
-
-int compare_ints(const void* a, const void* b)
-{
-    int arg1 = *(const int*)a;
-    int arg2 = *(const int*)b;
- 
-    if (arg1 < arg2) return -1;
-    if (arg1 > arg2) return  1;
-    return 0;
-}
-
-
-static void swap(void* str1, void* str2, const size_t elemSize)
-{
-    void* temp = malloc(elemSize);
-    assert(temp);
-
-    memcpy(temp, str1, elemSize);
-    memcpy(str1, str2, elemSize);
-    memcpy(str2, temp, elemSize);
-}
-
-
-static void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
-{
-    size_t unsortedSize = arrSize;
-    for (size_t i = 0; i < arrSize; i++)
-    {
-        for (size_t j = 0; j < unsortedSize - 1; j++)
-        {
-            //printf("\tBUBBLE_SORT: compare(%d, %d)\n", ((size_t)arr +   j  *elemSize), 
-            //                                           ((size_t)arr + (j+1)*elemSize));
-            if (compare((void*)((size_t)arr + j*elemSize), 
-                        (void*)((size_t)arr + (j+1)*elemSize)) == 1)
-            {
-                swap((void*)((size_t)arr + j*elemSize), 
-                     (void*)((size_t)arr + (j+1)*elemSize), elemSize);
-            }
-        }
-        unsortedSize--;
-    }
-}
+//#define TEST
 
 int main()
 {
     #ifdef TEST
     testCompareString();
     testSorting(bubbleSort, compare_ints);
+    printf("my_strlen(<0123456789>) = %u", my_strlen("0123456789\n", '\n'));
     #else
+
+    FILE* outputFile = fopen("output.txt", "w");
+    if (outputFile == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
 
     off_t size = getFileSize(FILE_NAME);
     char* buffer = FileToBuffer(size, FILE_NAME);
@@ -66,27 +31,37 @@ int main()
     // Parse the buffer into the lines using \n as a delimiter.
     char** text = parseBufferToLines(buffer, &nLines, '\n');
 
-    // buffer: <aaa \n bbb \n ccc \n asdasd \0 >
-
-    text[nLines] = NULL;
-    
-
-    for (int i = 0; text[i] != '\0'; i++)
-    {
-        printLine(text[i], '\n');
-    }
-
-    puts("\nSorting\n");
-    bubbleSort((void*)(text), nLines, sizeof(char*), compareLines);
+    // buffer: "aaa \n bbb \n ccc \n asdasd \0 "
 
     for (int i = 0; text[i]; i++)
     {
         printf("%u, text[%.2d] = ", size_t(text + i), i);
-        printLine(text[i], '\n');
+        printLineToFile(text[i], '\n', outputFile);
     }
 
+
+    fputs("\nStraight sorting\n\n", outputFile);
+    bubbleSort((void*)(text), nLines, sizeof(char*), comparePointersToLines);
+
+    for (int i = 0; text[i]; i++)
+    {
+        printf("%u, len = %u, text[%.2d] = ", size_t(text + i), my_strlen(text[i], '\n'), i);
+        printLineToFile(text[i], '\n', outputFile);
+    }
+
+
+    fputs("\nReversed sorting\n\n", outputFile);
+    bubbleSort((void*)(text), nLines, sizeof(char*), comparePointersToReversedLines);
+
+    for (int i = 0; text[i]; i++)
+    {
+        printf("%u, len = %u, text[%.2d] = ", size_t(text + i), my_strlen(text[i], '\n'), i);
+        printLineToFile(text[i], '\n', outputFile);
+    }
+
+
+    fclose(outputFile);
     free(text);
     free(buffer);
     #endif
-    
 }

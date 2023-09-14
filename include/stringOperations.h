@@ -58,12 +58,13 @@ void replaceCharacter(char input[], const char dst, const char src);
 size_t nCharactersInString (const char input[], const char chr);
 
 /**
- * @brief Prints a string to the console and stops at the given delimiter.
+ * @brief Prints a string to the file and stops at the given delimiter.
  * 
  * @param[in] input The input string.
  * @param[in] delim The delimiter.
+ * @param[in] file  The file.
  */
-void printLine(const char* input,   const char delim);
+void printLineToFile(const char* input, const char delim, FILE* file);
 
 /**
  * @brief Deletes non-letter characters from the line.
@@ -73,17 +74,6 @@ void printLine(const char* input,   const char delim);
  */
 void  deleteNonLetterCharacters (char* input, const char delim);
 
-
-/**
- * @brief Compares two lines for alphabetical order.
- * 
- * @param str1 First  string.
- * @param str2 Second string.
- * 
- * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal. 
- */
-int compareLines(const void* str1, const void* str2);
-int comparePointersToLines(const void* pstr1, const void* pstr2);
 /**
  * @brief Returns an array of pointer, each pointing to the start of a new line.
  * 
@@ -96,3 +86,14 @@ int comparePointersToLines(const void* pstr1, const void* pstr2);
  * @note Don't forget to `free()` the given pointer
 */
 char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
+
+
+/**
+ * @brief Counts the length of the line.
+ * 
+ * @param input The input line.
+ * @param delim The delimiter where the count stops.
+ *
+ * @return The length of the line. 
+ */
+size_t my_strlen(const char* input, const char delim);

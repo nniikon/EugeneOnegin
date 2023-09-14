@@ -2,6 +2,8 @@
 #include <random>
 #include <ctime>
 #include "..\include\stringOperations.h"
+#include "..\include\sortingOperations.h"
+
 
 void testCompareString();
 
