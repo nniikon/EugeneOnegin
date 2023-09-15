@@ -6,6 +6,10 @@
 
 int compare_ints(const void* a, const void* b);
 
+
+
+void quickSort(int* arr, size_t size, int (*compare)(const void*, const void*));
+
 /**
  * @brief Sorts an array based on the given comparison function.
  * 

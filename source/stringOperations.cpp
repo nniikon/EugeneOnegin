@@ -11,13 +11,15 @@ const int MAX_LINE_SIZE = 512;
         return result;
     }
 */
-
-void deleteNonLetterCharacters(char* input, const char delim)
+/*
+void deleteNonLetterCharacters(char* input, const char delim // fignya
 {
     const char ascii_a = 97;
     const char ascii_z = 122;
     const char ascii_A = 65;
     const char ascii_Z = 90;
+
+    
 
     size_t readIndex = 0;
     size_t writeIndex = 0;
@@ -36,25 +38,28 @@ void deleteNonLetterCharacters(char* input, const char delim)
 
     input[writeIndex] = delim;
 }   
+*/
 
-
-char* FileToBuffer(off_t size, const char* FILE_NAME)
+char* FileToBuffer(off_t* size, const char* FILE_NAME)
 {
-    char*  buf = (char*)calloc(size, sizeof(char));
+    char*  buf = (char*)calloc(*size + 1, sizeof(char));
     assert(buf);
 
     FILE  *file = fopen(FILE_NAME, "rb");
     assert(file);
 
-    fread (buf, sizeof(char), size, file);
-    buf[size] = '\0';
+    *size = fread(buf, sizeof(char), *size, file);
+    buf[*size] = '\0';
+    
+    fclose(file);
+    
     return buf;
 }
 
 
 off_t getFileSize(const char* fileName)
 {
-    struct stat bf;
+    struct stat bf = {};
     stat(fileName, &bf);
     return bf.st_size;
 }
@@ -134,7 +139,8 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 size_t my_strlen(const char* input, const char delim)
 {
     size_t i = 0;
-    for (i = 0; input[i] != delim && input[i] != '\0'; i++) {}
+    for (i = 0; input[i] != delim && input[i] != '\0'; i++) 
+    {}
     return i;
 }
 

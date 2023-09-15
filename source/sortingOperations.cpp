@@ -13,112 +13,148 @@ int compare_ints(const void* a, const void* b)
 
 int comparePointersToReversedLines(const void* pstr1, const void* pstr2)
 {
-    return compareReversedLines(*(const char**)pstr1, *(const char**)pstr2);
+    return compareReversedLines(*(const char* const*)pstr1, *(const char* const*)pstr2);
 }
 
 int compareReversedLines(const void* str1, const void* str2)
 {
-    const int MAX_LINE_SIZE = 512;
+    const char* cStr1 = (const char*)str1;
+    const char* cStr2 = (const char*)str2;
 
-    char strdup1[MAX_LINE_SIZE] = "";
-    char strdup2[MAX_LINE_SIZE] = "";
+    int index1 = my_strlen(cStr1, '\n');
+    int index2 = my_strlen(cStr2, '\n');
 
-    strncpy(strdup1, ((const char*)str1), MAX_LINE_SIZE);
-    strncpy(strdup2, ((const char*)str2), MAX_LINE_SIZE);
-
-    deleteNonLetterCharacters(strdup1, '\n');
-    deleteNonLetterCharacters(strdup2, '\n');
-
-    int str1_len = int(my_strlen(strdup1, '\n')) - 1; 
-    int str2_len = int(my_strlen(strdup2, '\n')) - 1; 
-
-    // printf("\t\t I'm comparing:\nstr1 = ");
-    // printLine(strdup1, '\n');
-    // printf("\t size = %d\n", str1_len);
-    // printf("str2 = ");
-    // printLine(strdup2, '\n');
-    // printf("\t size = %d\n", str2_len);
-
-    while (str1_len > 0 && str2_len > 0)
+    bool isLetter1 = false;
+    bool isLetter2 = false;
+    do
     {
-        //printf("%c vs %c\n", strdup1[str1_len], strdup2[str2_len]);
-        if      (int(strdup1[str1_len]) < int(strdup2[str2_len])) return -1;
-        else if (int(strdup1[str1_len]) > int(strdup2[str2_len])) return  1; 
-        str1_len--;
-        str2_len--;
-    }
+        isLetter1 = false;
+        isLetter2 = false;
 
-    // If strdup1 and strdup2 are the same length.
-    if (str1_len == 0 && str2_len == 0)
-    {
-        return 0;
-    }
-    // If strdup1 is shorter...
-    if (str1_len == 0) 
-        return 1;
-    else
-        return -1;
+        // Iterate to the letter.
+        while (!isLetter1)
+        {
+            index1--;
+            if(index1 < 0)
+            {
+                isLetter1 = false;
+                break;
+            }
+            isLetter1 = isalpha(cStr1[index1]);
+        }
 
-    assert(0);
-    return(-10);
+        // Iterate to the letter.
+        while (!isLetter2)
+        {
+            index2--;
+            if(index2 < 0)
+            {
+                isLetter2 = false;
+                break;
+            }
+            isLetter2 = isalpha(cStr2[index2]);
+        }
+
+        // Compare the letters ignoring the register.
+        if(int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) > 0)
+        {
+            return -1;
+        }
+        else if (int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) < 0)
+        {
+            return 1;
+        }
+    } while (isLetter1 && isLetter2);
+
+    return 0;
 }
 
 int comparePointersToLines(const void* pstr1, const void* pstr2)
 {
-    return compareLines(*(const char**)pstr1, *(const char**)pstr2);
+    return compareLines(*(const char* const*)pstr1, *(const char* const*)pstr2);
 }
 
 int compareLines(const void* str1, const void* str2)
 {
-    const int MAX_LINE_SIZE = 512;
+    const char* cStr1 = (const char*)str1; 
+    const char* cStr2 = (const char*)str2; 
 
-    char strdup1[MAX_LINE_SIZE] = "";
-    char strdup2[MAX_LINE_SIZE] = "";
+    int index1 = -1;
+    int index2 = -1;
 
-    strncpy(strdup1, ((const char*)str1), MAX_LINE_SIZE);
-    strncpy(strdup2, ((const char*)str2), MAX_LINE_SIZE);
-
-    deleteNonLetterCharacters(strdup1, '\n');
-    deleteNonLetterCharacters(strdup2, '\n');
-
-    int i = 0;
-    for (i = 0; strdup1[i] != '\n'  && strdup2[i] != '\n' && strdup1[i] && strdup2[i]; i++)
+    bool isLetter1 = false;
+    bool isLetter2 = false;
+    do
     {
-        // Ignore register to compare strings 
-        strdup1[i] = (char)tolower(strdup1[i]);
-        strdup2[i] = (char)tolower(strdup2[i]);
+        isLetter1 = false;
+        isLetter2 = false;
 
-        if      (int(strdup1[i]) < int(strdup2[i])) return -1;
-        else if (int(strdup1[i]) > int(strdup2[i])) return  1;
-    }
-    // If strdup1 and strdup2 are the same length.
-    if ((strdup1[i] == '\0' || strdup1[i] == '\n') && (strdup2[i] == '\0' || strdup2[i] == '\n'))
-    {
-        return 0;
-    }
-    // If strdup1 is shorter...
-    else if (strdup1[i] == '\0' || strdup1[i] == '\n')
-    {
-        return 1; // ... it goes first
-    }
-    else
-    {
-        return -1;
-    }
-    
-    // Error
-    assert(0);
-    return -100;
+        // Iterate to the letter.
+        while (!isLetter1)
+        {
+            index1++;
+            if(cStr1[index1] == '\0' || cStr1[index1] == '\n')
+            {
+                isLetter1 = false;
+                break;
+            }
+            isLetter1 = isalpha(cStr1[index1]);
+        }
+
+        // Iterate to the letter.
+        while (!isLetter2)
+        {
+            index2++;
+            if(cStr2[index2] == '\0' || cStr2[index2] == '\n')
+            {
+                isLetter2 = false;
+                break;
+            }
+            isLetter2 = isalpha(cStr2[index2]);
+        }
+
+        // Compare the letters ignoring the register.
+        if(int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) > 0)
+        {
+            return -1;
+        }
+        else if (int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) < 0)
+        {
+            return 1;
+        }
+    } while (isLetter1 && isLetter2);
+
+    return 0;
 }
 
 static void swap(void* str1, void* str2, const size_t elemSize)
 {
-    void* temp = malloc(elemSize);
-    assert(temp);
+    assert(str1 != NULL && str2 != NULL);
+    size_t i = 0;
 
-    memcpy(temp, str1, elemSize);
-    memcpy(str1, str2, elemSize);
-    memcpy(str2, temp, elemSize);
+    long* long1 = (long*)str1; 
+    long* long2 = (long*)str2; 
+    long temp = 0;
+
+    for (i = 0; i < elemSize / sizeof(long); i++)
+    {
+        memcpy(&temp, long1, sizeof(long));
+        memcpy(long1, long2, sizeof(long));
+        memcpy(long2, &temp, sizeof(long));
+    }
+
+    char* char1 = (char*)str1;
+    char* char2 = (char*)str2;
+    char ctemp = '0';
+
+    for (size_t j = 0; j < elemSize - i * sizeof(long); j++)
+    {
+        ctemp = char1[j];
+        char1[j] = char2[j];
+        char2[j] = ctemp;
+    }
+    
+     
 }
 
 void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
@@ -139,4 +175,33 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
         }
         unsortedSize--;
     }
+}
+
+void convQuickSort(int* arr, int low, int high, int (*compare)(const void*, const void*))
+{
+    int piv = (high - low) / 2;
+    while (low < high)
+    {
+        printf("low = %u \nhigh = %u \n", low, high);
+
+        while (arr[low]  < arr[piv])  low++;
+        while (arr[high] > arr[piv]) high--;
+
+        swap((void*)(arr + low), (void*)(arr + high), sizeof(int));
+    }
+}
+
+
+void quickSort(int* arr, size_t arrSize, int (*compare)(const void*, const void*))
+{
+    if(arrSize < 4)
+    {
+        bubbleSort((void*)arr, arrSize, sizeof(int), compare);
+        return;
+    }
+    int low  = 0;
+    int high = int(arrSize) - 1;
+
+    printf("\t\tQSORT: \nlow = %u \nhigh = %u \npiv = %u \n", low, high);
+    return convQuickSort(arr, low, high, compare);
 }

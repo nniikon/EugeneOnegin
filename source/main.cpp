@@ -5,24 +5,34 @@ static const char* FILE_NAME = "EugeneOnegin.txt";
 
 //#define TEST
 
+static FILE* openFile(const char* fileName)
+{
+    FILE* outputFile = fopen(fileName, "w");
+    if (outputFile == NULL) 
+    {
+        perror("Error opening file");
+        abort();
+    }
+}
+
+
 int main()
 {
     #ifdef TEST
+
     testCompareString();
     testSorting(bubbleSort, compare_ints);
     printf("my_strlen(<0123456789>) = %u", my_strlen("0123456789\n", '\n'));
+
     #else
 
-    FILE* outputFile = fopen("output.txt", "w");
-    if (outputFile == NULL) {
-        perror("Error opening file");
-        return 1;
-    }
-
-    off_t size = getFileSize(FILE_NAME);
-    char* buffer = FileToBuffer(size, FILE_NAME);
+    // Create the output file.
+    FILE* outputFile = openFile("output.txt");
     
-
+    // Create a buffer.
+    off_t size = getFileSize(FILE_NAME);
+    char* buffer = FileToBuffer(&size, FILE_NAME);
+    
     // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
     deleteRepetitiveCharacters(buffer, '\n');
@@ -34,31 +44,19 @@ int main()
     // buffer: "aaa \n bbb \n ccc \n asdasd \0 "
 
     for (int i = 0; text[i]; i++)
-    {
-        printf("%u, text[%.2d] = ", size_t(text + i), i);
         printLineToFile(text[i], '\n', outputFile);
-    }
-
 
     fputs("\nStraight sorting\n\n", outputFile);
-    bubbleSort((void*)(text), nLines, sizeof(char*), comparePointersToLines);
+    qsort(text, nLines, sizeof(char*), comparePointersToLines);
 
     for (int i = 0; text[i]; i++)
-    {
-        printf("%u, len = %u, text[%.2d] = ", size_t(text + i), my_strlen(text[i], '\n'), i);
         printLineToFile(text[i], '\n', outputFile);
-    }
-
 
     fputs("\nReversed sorting\n\n", outputFile);
     bubbleSort((void*)(text), nLines, sizeof(char*), comparePointersToReversedLines);
 
     for (int i = 0; text[i]; i++)
-    {
-        printf("%u, len = %u, text[%.2d] = ", size_t(text + i), my_strlen(text[i], '\n'), i);
         printLineToFile(text[i], '\n', outputFile);
-    }
-
 
     fclose(outputFile);
     free(text);

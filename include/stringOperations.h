@@ -13,14 +13,13 @@
  * 
  * This function copies information from the provided file to the allocated char* array
  * 
- * @param size      A size of the file.
- * @param FILE_NAME A name of the file.
+ * @param size[in, out] A size of the file.
+ * @param FILE_NAME[in] A name of the file.
  * @return A pointer to the buffer.
  * 
  * @note Don't forget to `free()` the given pointer.
  */
-char* FileToBuffer(off_t size, const char* FILE_NAME);
-
+char* FileToBuffer(off_t* size, const char* FILE_NAME);
 
 /**
  * @brief Gets a file size by it's name.
