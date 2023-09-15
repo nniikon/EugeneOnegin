@@ -136,7 +136,7 @@ size_t nCharactersInString(const char input[], const char chr)
 char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 {
     // If there are 2 \n, there might be 3 lines, hence + 1.
-    *nLines = nCharactersInString(buffer, '\n') + 1U;
+    *nLines = nCharactersInString(buffer, delimiter) + 1U;
 
     char** text = (char**)calloc(*nLines + 1U, sizeof(char*));
     if (text == NULL)
@@ -145,20 +145,31 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
         return NULL;
     }
 
-    text[*nLines] = nullptr;
+
 
     size_t line = 0U;
 
     text[line] = buffer;
     line++;
-    for (int i = 0; buffer[i] != '\0'; i++)
+
+    // for (int i = 0; buffer[i] != '\0'; i++)
+    // {
+    //     if(buffer[i] == delimiter)
+    //     {
+    //         text[line] = (buffer + i + 1);
+    //         line++;
+    //     }
+    // }
+
+    char* newLine = buffer;
+    while ((newLine = strchr(newLine, delimiter)) != NULL)
     {
-        if(buffer[i] == delimiter)
-        {
-            text[line] = (buffer + i + 1);
-            line++;
-        }
+        printf("Hello!\n");
+        text[line] = ++newLine;
+        line++;
     }
+
+    text[*nLines] = nullptr;
 
     return text;
 }

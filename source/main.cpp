@@ -7,11 +7,11 @@ static const char* FILE_NAME = "EugeneOnegin.txt";
 
 /*
 TODO:
-- Add error ENUM
-- Check for errors(calloc, fopen...)
 - Make a struct that contains every line's length
 - quickSort
 - console input
+- better swap function
+- lexogra... change comments
 */
 enum error
 {
@@ -19,7 +19,6 @@ enum error
     MEM_ALLOCATION_ERROR,
     STAT_ERROR,
 };
-
 
 
 int main()
@@ -30,22 +29,16 @@ int main()
     testSorting(bubbleSort, compare_ints);
     printf("my_strlen(<0123456789>) = %u", my_strlen("0123456789\n", '\n'));
     return 0;
+
     #endif
 
-    FILE* outputFile = fopen(FILE_NAME, "w");
+    FILE* outputFile = fopen("output.txt", "w");
     if (outputFile == NULL)
     {
         perror("Error opening file");
         return FILE_OPEN_ERROR;
     }
 
-    /*
-    TODO:
-    make a function
-    make a struct
-    get line lengths while creating the buffer
-    better swap function
-    */
 
     // Create a buffer.
     ssize_t sizeErr = getFileSize(FILE_NAME);
