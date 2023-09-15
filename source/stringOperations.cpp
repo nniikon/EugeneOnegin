@@ -19,7 +19,7 @@ void deleteNonLetterCharacters(char* input, const char delim // fignya
     const char ascii_A = 65;
     const char ascii_Z = 90;
 
-    
+
 
     size_t readIndex = 0;
     size_t writeIndex = 0;
@@ -37,22 +37,29 @@ void deleteNonLetterCharacters(char* input, const char delim // fignya
     }
 
     input[writeIndex] = delim;
-}   
+}
 */
+
+void printTextToFile(char** text, FILE* file, const char delim)
+{
+    for (int i = 0; text[i]; i++)
+        printLineToFile(text[i], delim, file);
+
+}
 
 char* FileToBuffer(off_t* size, const char* FILE_NAME)
 {
     char*  buf = (char*)calloc(*size + 1, sizeof(char));
-    assert(buf);
+    assert(buf)
 
     FILE  *file = fopen(FILE_NAME, "rb");
-    assert(file);
+    assert(file)
 
     *size = fread(buf, sizeof(char), *size, file);
     buf[*size] = '\0';
-    
+
     fclose(file);
-    
+
     return buf;
 }
 
@@ -65,7 +72,7 @@ off_t getFileSize(const char* fileName)
 }
 
 
-// This function accepts a string and a character as input. 
+// This function accepts a string and a character as input.
 // It scans through the string and removes consecutive occurrences of the specified character.
 void deleteRepetitiveCharacters(char input[], const char chr)
 {
@@ -93,7 +100,7 @@ void replaceCharacter(char input[], const char dst, const char src)
         if (input[i] == dst)
         {
             input[i] = src;
-        }  
+        }
     }
 }
 
@@ -113,14 +120,14 @@ size_t nCharactersInString(const char input[], const char chr)
 
 char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 {
-    // If there are 2 \n, there are 3 lines, hence + 1.
-    *nLines = nCharactersInString(buffer, '\n') + (size_t) 1;
+    // If there are 2 \n, there might be 3 lines, hence + 1.
+    *nLines = nCharactersInString(buffer, '\n') + 1ULL;
 
-    char** text = (char**)calloc(*nLines + 1, sizeof(char*));
-    
-    text[*nLines] = NULL;
+    char** text = (char**)calloc(*nLines + 1ULL, sizeof(char*));
 
-    size_t line = 0;
+    text[*nLines] = nullptr;
+
+    size_t line = 0ULL;
 
     text[line] = buffer;
     line++;
@@ -132,14 +139,14 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
             line++;
         }
     }
-    
+
     return text;
 }
 
 size_t my_strlen(const char* input, const char delim)
 {
     size_t i = 0;
-    for (i = 0; input[i] != delim && input[i] != '\0'; i++) 
+    for (i = 0; input[i] != delim && input[i] != '\0'; i++)
     {}
     return i;
 }
@@ -148,7 +155,7 @@ void printLineToFile(const char* input, const char delim, FILE* file)
 {
     for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
     {
-        fputc(input[i], file);
+        3A_fputc_SLOMAY_KOLENO(input[i], file);
     }
     fputc('\n', file);
 }

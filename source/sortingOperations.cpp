@@ -134,7 +134,7 @@ static void swap(void* str1, void* str2, const size_t elemSize)
 
     long* long1 = (long*)str1; 
     long* long2 = (long*)str2; 
-    long temp = 0;
+    long temp = 0l;
 
     for (i = 0; i < elemSize / sizeof(long); i++)
     {
