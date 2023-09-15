@@ -16,7 +16,6 @@ $(EXECUTABLE): $(OBJS)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	g++ $^ $(CFLAGS) -c -o $@
 
-
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
