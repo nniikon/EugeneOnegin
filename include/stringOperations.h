@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STRING_OPERATIONS_H
+#define STRING_OPERATIONS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +8,7 @@
 #include <sys/types.h>
 #include <assert.h>
 #include <ctype.h>
-
+#include <limits.h>
 
 
 
@@ -25,21 +26,23 @@ void printTextToFile(char** text, FILE* file, const char delim);
  *
  * This function copies information from the provided file to the allocated char* array
  *
- * @param size[in, out] A size of the file.
+ * @param size[in,out]  A size of the file. Changes to the real amount of read symbols. 
  * @param FILE_NAME[in] A name of the file.
+ * 
  * @return A pointer to the buffer.
  *
  * @note Don't forget to `free()` the given pointer.
  */
-char* FileToBuffer(off_t* size, const char* FILE_NAME);
+char* FileToBuffer(size_t* size, const char* FILE_NAME);
 
 /**
  * @brief Gets a file size by it's name.
  *
  * @param fileName The file name.
- * @return The size of the file.
+ * 
+ * @return If successful, returns the size of the file. On error, returns `-1`.
  */
-off_t getFileSize(const char* fileName);
+ssize_t getFileSize(const char* fileName);
 
 
 /**
@@ -108,3 +111,5 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
  * @return The length of the line.
  */
 size_t my_strlen(const char* input, const char delim);
+
+#endif

@@ -47,13 +47,22 @@ void printTextToFile(char** text, FILE* file, const char delim)
 
 }
 
-char* FileToBuffer(off_t* size, const char* FILE_NAME)
+char* FileToBuffer(size_t* size, const char* FILE_NAME)
 {
-    char*  buf = (char*)calloc(*size + 1, sizeof(char));
-    assert(buf)
+    char* buf = (char*)calloc(*size + 1, sizeof(char));
+    if (buf == NULL)
+    {
+        perror("Memory allocation error");
+        return NULL;
+    }
+    
 
-    FILE  *file = fopen(FILE_NAME, "rb");
-    assert(file)
+    FILE* file = fopen(FILE_NAME, "rb");
+    if (file == NULL)
+    {
+        perror("File opening error");
+        return NULL;
+    }
 
     *size = fread(buf, sizeof(char), *size, file);
     buf[*size] = '\0';
@@ -64,10 +73,16 @@ char* FileToBuffer(off_t* size, const char* FILE_NAME)
 }
 
 
-off_t getFileSize(const char* fileName)
+ssize_t getFileSize(const char* fileName)
 {
     struct stat bf = {};
-    stat(fileName, &bf);
+    ssize_t error = stat(fileName, &bf);
+    if (error == -1)
+    {
+        perror("Stat error");
+        return error;
+    }
+    
     return bf.st_size;
 }
 
@@ -121,13 +136,18 @@ size_t nCharactersInString(const char input[], const char chr)
 char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 {
     // If there are 2 \n, there might be 3 lines, hence + 1.
-    *nLines = nCharactersInString(buffer, '\n') + 1ULL;
+    *nLines = nCharactersInString(buffer, '\n') + 1U;
 
-    char** text = (char**)calloc(*nLines + 1ULL, sizeof(char*));
+    char** text = (char**)calloc(*nLines + 1U, sizeof(char*));
+    if (text == NULL)
+    {
+        perror("Memory allocation error");
+        return NULL;
+    }
 
     text[*nLines] = nullptr;
 
-    size_t line = 0ULL;
+    size_t line = 0U;
 
     text[line] = buffer;
     line++;
@@ -155,7 +175,7 @@ void printLineToFile(const char* input, const char delim, FILE* file)
 {
     for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
     {
-        3A_fputc_SLOMAY_KOLENO(input[i], file);
+        fputc(input[i], file); // <----------------------------- fix slow
     }
     fputc('\n', file);
 }

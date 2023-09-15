@@ -13,6 +13,14 @@ TODO:
 - quickSort
 - console input
 */
+enum error
+{
+    FILE_OPEN_ERROR,
+    MEM_ALLOCATION_ERROR,
+    STAT_ERROR,
+};
+
+
 
 int main()
 {
@@ -28,20 +36,26 @@ int main()
     if (outputFile == NULL)
     {
         perror("Error opening file");
-        return 1;
+        return FILE_OPEN_ERROR;
     }
-
 
     /*
     TODO:
     make a function
     make a struct
     get line lengths while creating the buffer
+    better swap function
     */
 
     // Create a buffer.
-    off_t size = getFileSize(FILE_NAME);
+    ssize_t sizeErr = getFileSize(FILE_NAME);
+    if (sizeErr == -1)
+        return STAT_ERROR;
+    size_t size = (size_t)sizeErr;
+
     char* buffer = FileToBuffer(&size, FILE_NAME);
+    if (buffer == NULL)
+        return FILE_OPEN_ERROR;
 
     // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
@@ -50,9 +64,11 @@ int main()
 
     // Parse the buffer into the lines using \n as a delimiter.
     char** text = parseBufferToLines(buffer, &nLines, '\n');
+    if (text == NULL)
+        return MEM_ALLOCATION_ERROR;
 
-    // buffer looks like: "aaa \n bbb \n ccc \n asdasd \0 "
-
+    // buffer should look like: "aaa \n bbb \n ccc \n asdasd \0 "  
+    
     fputs("Straight sorting\n\n", outputFile);
     qsort(text, nLines, sizeof(char*), comparePointersToLines);
 
@@ -64,8 +80,7 @@ int main()
     printTextToFile(text, outputFile, '\n');
 
     fputs("\nOriginal\n\n", outputFile);
-
-    fputs(buffer, outputFile);
+    fputs(buffer,           outputFile);
 
     fclose(outputFile);
     free(text);

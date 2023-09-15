@@ -1,4 +1,5 @@
-#pragma ban
+#ifndef SORTING_OPERATIONS_H
+#define SORTING_OPERATIONS_H
 
 #include <assert.h>
 #include <string.h>
@@ -63,3 +64,5 @@ int comparePointersToLines(const void* pstr1, const void* pstr2);
  * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
  */
 int comparePointersToReversedLines(const void* pstr1, const void* pstr2);
+
+#endif
