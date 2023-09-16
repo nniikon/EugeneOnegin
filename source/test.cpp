@@ -14,7 +14,7 @@ static void testSingleCompareString(const char* str1, const char* str2, int expe
 
 static void testSingleCompareReversedString(const char* str1, const char* str2, int expectedValue)
 {
-    int cmp = compareReversedLines(str1, str2);
+    int cmp = compareReversedLines(str1, strlen(str1), str2, strlen(str2));
     if (cmp == expectedValue)
         printf("%50s", "REVERSED COMPARE STRING TEST PASSED\n");
     else

@@ -40,13 +40,6 @@ void deleteNonLetterCharacters(char* input, const char delim // fignya
 }
 */
 
-void printTextToFile(char** text, FILE* file, const char delim)
-{
-    for (int i = 0; text[i]; i++)
-        printLineToFile(text[i], delim, file);
-
-}
-
 void printTextToFile(line* txt, FILE* file, const char delim)
 {
     for (int i = 0; txt[i].str; i++)
@@ -163,12 +156,15 @@ line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 
 
     char* newLine = buffer;
+    char* oldLine = buffer;
     while ((newLine = strchr(newLine, delimiter)) != NULL)
     {
+        text[line - 1].len = ((size_t)newLine - (size_t)oldLine) / sizeof(char);
         text[line].str = ++newLine;
+        oldLine = newLine;
         line++;
     }
-
+    text[line - 1].len = ((size_t)strchr(text[line - 1].str, '\0') - (size_t)text[line - 1].str) / sizeof(char);
     text[*nLines].str = nullptr;
 
     return text;

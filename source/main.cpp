@@ -1,5 +1,6 @@
 #include "..\include\stringOperations.h"
-#include "..\include\test.h"
+#include "..\include\sortingOperations.h"
+//#include "..\include\test.h"
 
 static const char* FILE_NAME = "EugeneOnegin.txt";
 
@@ -50,6 +51,7 @@ int main()
     char* buffer = FileToBuffer(&size, FILE_NAME);
     if (buffer == NULL)
         return FILE_OPEN_ERROR;
+    
 
     // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
@@ -61,6 +63,13 @@ int main()
     if (txt == NULL)
         return MEM_ALLOCATION_ERROR;
     
+    for (size_t i = 0; txt[i].str; i++)
+    {
+        printLineToFile(txt[i].str, '\n', stdout);
+        printf("%u\n", txt[i].len);
+    }
+
+
     // buffer should look like: "aaa \n bbb \n ccc \n asdasd \0 "  
     
     fputs("Straight sorting\n\n", outputFile);
