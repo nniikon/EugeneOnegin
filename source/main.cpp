@@ -22,11 +22,12 @@ enum Error
     UNEXPECTED_ERROR,
 };
 
+/// @brief Represents the program's operating mode.
 enum Mode
 {
-    ORIGINAL,
-    STRAIGHT_SORT,
-    REVERSED_SORT,
+    ORIGINAL,      ///< Copies the original text.
+    STRAIGHT_SORT, ///< Sorts original text lexicographically.
+    REVERSED_SORT, ///< Sort
     TEST,
     ERROR,
 };
@@ -37,8 +38,10 @@ int main(int argc, char** argv)
 {
     char*  inputFile_name = NULL;
     char* outputFIle_name = NULL;
+
     Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
-    printf("Input file: %s \nOutput file: %s \n", inputFile_name, outputFIle_name);
+    printf("%s %s", inputFile_name, outputFIle_name);
+
     if (mode == ERROR)
         return INVALID_ARGS;
         
@@ -108,7 +111,11 @@ Mode parseArguments(int argc, char** argv, char** inFile, char** outFile)
 {
     Mode mode = ORIGINAL; // Original by default.
 
-    if (argc < 3) 
+    *inFile = NULL;
+    char* defaultOuputName = "output.txt";
+    *outFile = defaultOuputName;
+
+    if (argc < 2) 
     {
         fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> -output <output_file>\n", argv[0]);
         return ERROR;
@@ -119,7 +126,7 @@ Mode parseArguments(int argc, char** argv, char** inFile, char** outFile)
         if      (strcmp(argv[i], "-s") == 0)  mode = STRAIGHT_SORT; 
         else if (strcmp(argv[i], "-r") == 0)  mode = REVERSED_SORT; 
         else if (strcmp(argv[i], "-o") == 0)  mode = ORIGINAL; 
-        else if (strcmp(argv[i], "-t") == 0)  mode = TEST;
+        else if (strcmp(argv[i], "-t") == 0)  return TEST;
         else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc) 
         {
             *inFile = argv[i + 1];
@@ -136,5 +143,11 @@ Mode parseArguments(int argc, char** argv, char** inFile, char** outFile)
             return ERROR;
         }
     }
+    if (*inFile == NULL)
+    {
+        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> -output <output_file>\n", argv[0]);
+        return ERROR;
+    }
+
     return mode;
 }
