@@ -8,7 +8,7 @@
 int compare_ints(const void* a, const void* b); // For testing purposes.
 
 
-void quickSort(int* arr, size_t size, int (*compare)(const void*, const void*));
+void my_qsort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*));
 
 /**
  * @brief Sorts an array based on the given comparison function using the bubble sorting algorithm.

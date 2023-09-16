@@ -185,31 +185,38 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
     }
 }
 
-void convQuickSort(int* arr, int low, int high, int (*compare)(const void*, const void*))
+static size_t partition(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
 {
-    int piv = (high - low) / 2;
+    int pivoIndex = high;
     while (low < high)
     {
-        printf("low = %u \nhigh = %u \n", low, high);
-
-        while (arr[low]  < arr[piv])  low++;
-        while (arr[high] > arr[piv]) high--;
-
-        swap((void*)(arr + low), (void*)(arr + high), sizeof(int));
+        while (compare((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize)) < 0 && low < high)
+        {
+            low++;
+        }
+        while (compare((void*)((size_t)arr + high * elemSize), (void*)((size_t)arr + pivoIndex * elemSize)) >= 0 && low < high)
+        {
+            high--;
+        }
+        swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + high * elemSize), elemSize);
     }
+    swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize), sizeof(int));
+    return low;
 }
 
-
-void quickSort(int* arr, size_t arrSize, int (*compare)(const void*, const void*))
+static void qsortRecursion(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
 {
-    if(arrSize < 4)
+    if (low < high && high > 0)
     {
-        bubbleSort((void*)arr, arrSize, sizeof(int), compare);
-        return;
+        int pivoIndex = partition(arr, low, high, elemSize, compare);
+        qsortRecursion(arr, low          , pivoIndex - 1, elemSize, compare);
+        qsortRecursion(arr, pivoIndex + 1, high         , elemSize, compare);
     }
-    int low  = 0;
-    int high = int(arrSize) - 1;
-
-    printf("\t\tQSORT: \nlow = %u \nhigh = %u \npiv = %u \n", low, high);
-    return convQuickSort(arr, low, high, compare);
 }
+
+
+void my_qsort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
+{
+    qsortRecursion(arr, 0, arrSize - 1, elemSize, compare);
+}
+

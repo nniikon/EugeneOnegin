@@ -58,6 +58,7 @@ int main(int argc, char** argv)
         return FILE_OPEN_ERROR;
     }
 
+
     // Create a buffer.
     ssize_t sizeErr = getFileSize(inputFile_name);
     if (sizeErr == -1)
@@ -87,11 +88,11 @@ int main(int argc, char** argv)
             fputs(buffer, outputFile);
             break;
         case STRAIGHT_SORT:
-            qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToLines);
+            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToLines);
             printTextToFile(txt, outputFile, '\n');
             break;
         case REVERSED_SORT:
-            qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedLines);
+            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedLines);
             printTextToFile(txt, outputFile, '\n');
             break;
         default:
