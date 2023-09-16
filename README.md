@@ -1,5 +1,7 @@
 # Eugene Onegin README
-
+<p align='center'>
+    <img src="./media/giphy.gif" alt="drawing" width="200"/>
+</p>
 ## Description
 This GitHub repository contains a simple text processing tool that takes input from a file and provides three different text sorting options: lexicographical sorting, lexicographical sorting starting from the last character, and displaying the original text. To use this tool, you can specify the sorting mode using one of the following options: `[-s|-r|-o]`, and provide input and output file paths as follows:
 
