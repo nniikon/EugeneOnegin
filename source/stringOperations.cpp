@@ -171,15 +171,6 @@ line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 }
 
 
-
-size_t my_strlen(const char* input, const char delim)
-{
-    size_t i = 0;
-    for (i = 0; input[i] != delim && input[i] != '\0'; i++)
-    {}
-    return i;
-}
-
 void printLineToFile(const char* input, const char delim, FILE* file)
 {
     for (int i = 0; input[i] != delim && input[i] != '\0'; i++)

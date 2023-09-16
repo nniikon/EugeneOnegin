@@ -10,20 +10,22 @@
 #include <ctype.h>
 #include <limits.h>
 
+
+/// @brief A structure for storing a `char*` string along with it's length.
 struct line
 {
-    char* str;
-    size_t len;
+    char* str;  /**< The `char*` string.       */
+    size_t len; /**< The length of the string. */
 };
 
 
 
 /**
- * @brief Puts a char** text array into the file.
+ * @brief Prints a `line*` text into the file.
  *
  * @param txt   The struct text array.
- * @param file  The opened file for writing.
- * @param delim The symbol each text[i] is ending with.
+ * @param file  The opened for writing file.
+ * @param delim The symbol each `line[i].str` is ending with.
  */
 void printTextToFile(line* txt, FILE* file, const char delim);
 
@@ -50,7 +52,6 @@ char* FileToBuffer(size_t* size, const char* FILE_NAME);
  */
 ssize_t getFileSize(const char* fileName);
 
-
 /**
  * @brief Removes all consecutive occurrences of the given character in the string.
  *
@@ -75,7 +76,7 @@ void replaceCharacter(char input[], const char dst, const char src);
  * @param[in] chr   The character.
  * @return The amount of given characters in the string.
  */
-size_t nCharactersInString (const char input[], const char chr);
+size_t nCharactersInString(const char input[], const char chr);
 
 /**
  * @brief Prints a string to the file and stops at the given delimiter.
@@ -87,35 +88,16 @@ size_t nCharactersInString (const char input[], const char chr);
 void printLineToFile(const char* input, const char delim, FILE* file);
 
 /**
- * @brief Deletes non-letter characters from the line.
- *
- * @param[in,out] input The input string.
- * @param[in]     delim The delimiter a line ends at.
- */
-void deleteNonLetterCharacters(char* input, const char delim);
-
-/**
  * @brief Returns an array of pointer, each pointing to the start of a new line.
  *
  * @param[in]  buffer    The buffer that needs to be parsed.
- * @param[in]  delimiter The symbol that indicates a new line.
  * @param[out] nLines    The number of lines in the buffer.
+ * @param[in]  delimiter The symbol that indicates a new line.
  *
  * @return An array on `line`, ending with `NULL`.
  *
  * @note Don't forget to `free()` the given pointer
 */
 line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
-
-
-/**
- * @brief Counts the length of the line.
- *
- * @param input The input line.
- * @param delim The delimiter where the count stops.
- *
- * @return The length of the line.
- */
-size_t my_strlen(const char* input, const char delim);
 
 #endif

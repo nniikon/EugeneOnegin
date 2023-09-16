@@ -5,14 +5,13 @@
 #include <string.h>
 #include "..\include\stringOperations.h"
 
-int compare_ints(const void* a, const void* b);
-
+int compare_ints(const void* a, const void* b); // For testing purposes.
 
 
 void quickSort(int* arr, size_t size, int (*compare)(const void*, const void*));
 
 /**
- * @brief Sorts an array based on the given comparison function.
+ * @brief Sorts an array based on the given comparison function using the bubble sorting algorithm.
  *
  * @param arr      The array to be sorted.
  * @param arrSize  The number of elements in the given array.
