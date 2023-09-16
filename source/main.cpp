@@ -2,13 +2,9 @@
 #include "..\include\sortingOperations.h"
 #include "..\include\test.h"
 
-//#define TEST
-
 /*
 TODO:
-- Make a struct that contains every line's length +
 - quickSort
-- console input +
 - better swap function 
 - lexogra... change comments
 */
@@ -22,17 +18,20 @@ enum Error
     UNEXPECTED_ERROR,
 };
 
+
 /// @brief Represents the program's operating mode.
 enum Mode
 {
     ORIGINAL,      ///< Copies the original text.
-    STRAIGHT_SORT, ///< Sorts original text lexicographically.
-    REVERSED_SORT, ///< Sort
-    TEST,
-    ERROR,
+    STRAIGHT_SORT, ///< Sorts lines lexicographically.
+    REVERSED_SORT, ///< Sorts reversed lines lexicographically.
+    TEST,          ///< Runs some tests.
+    ERROR,         ///< ERROR.
 };
 
 Mode parseArguments(int argc, char** argv, char** inFile, char** outFile);
+
+
 
 int main(int argc, char** argv)
 {
@@ -40,7 +39,6 @@ int main(int argc, char** argv)
     char* outputFIle_name = NULL;
 
     Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
-    printf("%s %s", inputFile_name, outputFIle_name);
 
     if (mode == ERROR)
         return INVALID_ARGS;
