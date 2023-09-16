@@ -7,7 +7,7 @@
 
 int compare_ints(const void* a, const void* b); // For testing purposes.
 
-
+// https://en.cppreference.com/w/c/algorithm/qsort
 void my_qsort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*));
 
 /**

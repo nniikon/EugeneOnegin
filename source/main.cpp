@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     if (mode == TEST)
     {
         testCompareString();
-        testSorting(bubbleSort, compare_ints);
+        testSorting(qsort, compare_ints);
         return 0;
     }
 

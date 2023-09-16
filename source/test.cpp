@@ -61,8 +61,8 @@ void testSorting(void (*sort)(void*, size_t, size_t, int (*cmp)(const void*, con
 {
     srand(time(NULL));
     const int arrSize = 15;
-    int qSortArr[arrSize] = {};
-    int  sortArr[arrSize] = {};
+    int qSortArr[arrSize] = {0};
+    int  sortArr[arrSize] = {0};
     for (int i = 0; i < arrSize; i++)
     {
         qSortArr[i] = rand() % 100;

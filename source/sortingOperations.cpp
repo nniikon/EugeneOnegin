@@ -148,7 +148,7 @@ static void swap(void* str1, void* str2, const size_t elemSize)
     for (i = 0; i < elemSize / sizeof(long); i++)
     {
         memcpy(&temp, long1, sizeof(long));
-        memcpy(long1, long2, sizeof(long)); // FIX
+        memcpy(long1, long2, sizeof(long)); // can be easier, but i'm too lasy
         memcpy(long2, &temp, sizeof(long));
     }
 

@@ -1,45 +1,5 @@
 #include "..\include\stringOperations.h"
 
-
-const int MAX_LINE_SIZE = 512;
-/*
-    static char* my_strdup(const char* input)
-    {
-        size_t inputLength = strlen(input);
-        char* result = (char*)malloc(inputLength + 1);
-        memcpy(result, input, inputLength+1);
-        return result;
-    }
-*/
-/*
-void deleteNonLetterCharacters(char* input, const char delim // fignya
-{
-    const char ascii_a = 97;
-    const char ascii_z = 122;
-    const char ascii_A = 65;
-    const char ascii_Z = 90;
-
-
-
-    size_t readIndex = 0;
-    size_t writeIndex = 0;
-
-    while (input[readIndex] != '\0' && input[readIndex] != delim)
-    {
-        if ((ascii_a <= input[readIndex] && input[readIndex] <= ascii_z) ||
-            (ascii_A <= input[readIndex] && input[readIndex] <= ascii_Z))
-        {
-            input[writeIndex] = input[readIndex];
-            writeIndex++;
-        }
-
-        readIndex++;
-    }
-
-    input[writeIndex] = delim;
-}
-*/
-
 void printTextToFile(line* txt, FILE* file, const char delim)
 {
     for (int i = 0; txt[i].str; i++)
