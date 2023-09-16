@@ -10,16 +10,22 @@
 #include <ctype.h>
 #include <limits.h>
 
+struct line
+{
+    char* str;
+    size_t len;
+};
+
 
 
 /**
  * @brief Puts a char** text array into the file.
  *
- * @param text  The char** text array.
- * @param file  The opened for writing file.
+ * @param txt   The struct text array.
+ * @param file  The opened file for writing.
  * @param delim The symbol each text[i] is ending with.
  */
-void printTextToFile(char** text, FILE* file, const char delim);
+void printTextToFile(line* txt, FILE* file, const char delim);
 
 /**
  * @brief Moves data from a file to the buffer.
@@ -86,20 +92,20 @@ void printLineToFile(const char* input, const char delim, FILE* file);
  * @param[in,out] input The input string.
  * @param[in]     delim The delimiter a line ends at.
  */
-void  deleteNonLetterCharacters (char* input, const char delim);
+void deleteNonLetterCharacters(char* input, const char delim);
 
 /**
  * @brief Returns an array of pointer, each pointing to the start of a new line.
  *
- * @param[in]  buffer    A buffer that needs to be parsed.
- * @param[in]  delimiter A symbol that indicates a new line.
- * @param[out] nLines    A number of lines in the buffer.
+ * @param[in]  buffer    The buffer that needs to be parsed.
+ * @param[in]  delimiter The symbol that indicates a new line.
+ * @param[out] nLines    The number of lines in the buffer.
  *
- * @return A pointer to an array of pointers, each pointing to the start of a new line, ending with NULL.
+ * @return An array on `line`, ending with `NULL`.
  *
  * @note Don't forget to `free()` the given pointer
 */
-char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
+line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
 
 
 /**

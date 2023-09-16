@@ -32,6 +32,7 @@ int main()
 
     #endif
 
+
     FILE* outputFile = fopen("output.txt", "w");
     if (outputFile == NULL)
     {
@@ -56,26 +57,24 @@ int main()
     size_t nLines = 0;
 
     // Parse the buffer into the lines using \n as a delimiter.
-    char** text = parseBufferToLines(buffer, &nLines, '\n');
-    if (text == NULL)
+    line* txt = parseBufferToLines(buffer, &nLines, '\n');
+    if (txt == NULL)
         return MEM_ALLOCATION_ERROR;
-
+    
     // buffer should look like: "aaa \n bbb \n ccc \n asdasd \0 "  
     
     fputs("Straight sorting\n\n", outputFile);
-    qsort(text, nLines, sizeof(char*), comparePointersToLines);
-
-    printTextToFile(text, outputFile, '\n');
+    qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToLines);
+    printTextToFile(txt, outputFile, '\n');
 
     fputs("\nReversed sorting\n\n", outputFile);
-    bubbleSort((void*)(text), nLines, sizeof(char*), comparePointersToReversedLines);
-
-    printTextToFile(text, outputFile, '\n');
+    qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedLines);
+    printTextToFile(txt, outputFile, '\n');
 
     fputs("\nOriginal\n\n", outputFile);
     fputs(buffer,           outputFile);
 
     fclose(outputFile);
-    free(text);
+    free(txt);
     free(buffer);
 }

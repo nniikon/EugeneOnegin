@@ -74,6 +74,18 @@ int comparePointersToLines(const void* pstr1, const void* pstr2)
     return compareLines(*(const char* const*)pstr1, *(const char* const*)pstr2);
 }
 
+int compareLinePointersToLines(const void* pline1, const void* pline2) {
+    const line* line1 = (const line*)pline1;
+    const line* line2 = (const line*)pline2;
+
+    return compareLines(line1->str, line2->str);
+}
+int compareLinePointersToReversedLines(const void* pline1, const void* pline2) {
+    const line* line1 = (const line*)pline1;
+    const line* line2 = (const line*)pline2;
+
+    return compareReversedLines(line1->str, line2->str);
+}
 int compareLines(const void* str1, const void* str2)
 {
     const char* cStr1 = (const char*)str1; 
@@ -139,7 +151,7 @@ static void swap(void* str1, void* str2, const size_t elemSize)
     for (i = 0; i < elemSize / sizeof(long); i++)
     {
         memcpy(&temp, long1, sizeof(long));
-        memcpy(long1, long2, sizeof(long));
+        memcpy(long1, long2, sizeof(long)); // FIX
         memcpy(long2, &temp, sizeof(long));
     }
 
@@ -164,13 +176,12 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
     {
         for (size_t j = 0; j < unsortedSize - 1; j++)
         {
-            //printf("\tBUBBLE_SORT: compare(%d, %d)\n", ((size_t)arr +   j  *elemSize), 
-            //                                           ((size_t)arr + (j+1)*elemSize));
-            if (compare((void*)((size_t)arr + j    *elemSize), 
-                        (void*)((size_t)arr + (j+1)*elemSize)) == 1)
+            void* element1 = (void*)((size_t*)arr + j * elemSize);
+            void* element2 = (void*)((size_t*)arr + (j + 1) * elemSize);
+
+            if (compare(element1, element2) > 0)
             {
-                swap((void*)((size_t)arr + j    *elemSize), 
-                     (void*)((size_t)arr + (j+1)*elemSize), elemSize);
+                swap(element1, element2, elemSize);
             }
         }
         unsortedSize--;

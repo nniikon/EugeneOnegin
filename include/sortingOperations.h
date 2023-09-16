@@ -54,7 +54,25 @@ int compareReversedLines(const void* str1, const void* str2);
  */
 int comparePointersToLines(const void* pstr1, const void* pstr2);
 
+/**
+ * @brief Compares two line* pointers for alphabetical order.
+ *
+ * @param pstr1 First  pointer.
+ * @param pstr2 Second pointer.
+ *
+ * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
+ */
+int compareLinePointersToLines(const void* pline1, const void* pline2);
 
+/**
+ * @brief Compares two line* pointers for alphabetical order in reversed lines.
+ *
+ * @param pstr1 First  pointer.
+ * @param pstr2 Second pointer.
+ *
+ * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
+ */
+int compareLinePointersToReversedLines(const void* pline1, const void* pline2);
 /**
  * @brief Compares two char** pointers for alphabetical order in reversed lines.
  *

@@ -47,6 +47,15 @@ void printTextToFile(char** text, FILE* file, const char delim)
 
 }
 
+void printTextToFile(line* txt, FILE* file, const char delim)
+{
+    for (int i = 0; txt[i].str; i++)
+    {
+        printLineToFile(txt[i].str, delim, file);
+    }
+
+}
+
 char* FileToBuffer(size_t* size, const char* FILE_NAME)
 {
     char* buf = (char*)calloc(*size + 1, sizeof(char));
@@ -133,12 +142,13 @@ size_t nCharactersInString(const char input[], const char chr)
     return counter;
 }
 
-char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
+
+line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
 {
     // If there are 2 \n, there might be 3 lines, hence + 1.
     *nLines = nCharactersInString(buffer, delimiter) + 1U;
 
-    char** text = (char**)calloc(*nLines + 1U, sizeof(char*));
+    line* text = (line*)calloc(*nLines + 1U, sizeof(line));
     if (text == NULL)
     {
         perror("Memory allocation error");
@@ -146,33 +156,25 @@ char** parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
     }
 
 
-
     size_t line = 0U;
 
-    text[line] = buffer;
+    text[line].str = buffer;
     line++;
 
-    // for (int i = 0; buffer[i] != '\0'; i++)
-    // {
-    //     if(buffer[i] == delimiter)
-    //     {
-    //         text[line] = (buffer + i + 1);
-    //         line++;
-    //     }
-    // }
 
     char* newLine = buffer;
     while ((newLine = strchr(newLine, delimiter)) != NULL)
     {
-        printf("Hello!\n");
-        text[line] = ++newLine;
+        text[line].str = ++newLine;
         line++;
     }
 
-    text[*nLines] = nullptr;
+    text[*nLines].str = nullptr;
 
     return text;
 }
+
+
 
 size_t my_strlen(const char* input, const char delim)
 {
