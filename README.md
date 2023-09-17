@@ -4,7 +4,7 @@
 </p>
 
 ## Description
-This GitHub repository contains a simple text processing tool that takes input from a file and provides three different text sorting options: lexicographical sorting, lexicographical sorting starting from the last character, and displaying the original text. To use this tool, you can specify the sorting mode using one of the following options: `[-s|-r|-o]`, and provide input and output file paths as follows:
+This GitHub repository contains a simple text processing tool that takes input from a file and provides three different text sorting options: lexicographical sorting, lexicographical sorting starting from the last character, and displaying the original text. To use this tool, specify the sorting mode with one of the following options [-s|-r|-o], and provide the input and output file paths as follows:
 
 ```bash
 .\build\EugeneOnegin.exe [-s|-r|-o] -input <input_file> -output <output_file>
@@ -33,5 +33,9 @@ This GitHub repository contains a simple text processing tool that takes input f
    ```
 
 4. You can also choose other sorting options (`-r` or `-o`) as per your requirements.
+
+## Note on Character Handling
+
+The program focuses specifically on alphabetic characters and is not case-sensitive. It ignores any special characters, digits, or spaces, concentrating only on the letters within the lines.
 
 Feel free to contribute to this project or provide feedback. Happy sorting!
