@@ -140,20 +140,24 @@ static void swap(void* str1, void* str2, const size_t elemSize)
 {
     assert(str1 != NULL && str2 != NULL);
 
-    // int currentSize = elemSize;
+    int currentSize = elemSize;
 
-    // while (currentSize > sizeof(long))
-    // {
-    //     long temp    = *(long*)str1;
-    //     *(long*)str2 = *(long*)str1;
-    //     *(long*)str2 = temp;
-    //     currentSize -= sizeof(long);
-    // }
+    while(currentSize >= int(sizeof(long)))
+    {
+        long ltemp = *((long*)str1);
+        *((long*)str1) = *((long*)str2);
+        *((long*)str2) = ltemp;
+        currentSize -= sizeof(long);
+
+        str1 = (void*)((size_t)str1 + sizeof(long));
+        str2 = (void*)((size_t)str2 + sizeof(long));
+    } 
+
     
     char* char1 = (char*)str1;
     char* char2 = (char*)str2;
 
-    for (int j = 0; j < elemSize; j++)
+    for (int j = 0; j < currentSize; j++)
     {
         char ctemp = char1[j];
         char1[j] = char2[j];
