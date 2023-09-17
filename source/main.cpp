@@ -4,13 +4,22 @@
 
 /*
 TODO:
-- quickSort
 - better swap function 
 - lexogra... change comments
+- add -h
+- better README 
+- bubble sort or qsort arg option
+- shorter partition lines
+- MODE_ prefixes
+- Better error and free(), close() handling.
+    Change return values for that
+- wrap File to normilized buffer into a function
+- fix printLineToFile();
 */
 
 enum Error
 {
+    NO_ERROR,
     FILE_OPEN_ERROR,
     MEM_ALLOCATION_ERROR,
     STAT_ERROR,
@@ -18,25 +27,22 @@ enum Error
     UNEXPECTED_ERROR,
 };
 
-
 /// @brief Represents the program's operating mode.
 enum Mode
 {
-    ORIGINAL,      ///< Copies the original text.
+    /*MODE_*/ORIGINAL,      ///< Copies the original text.
     STRAIGHT_SORT, ///< Sorts lines lexicographically.
     REVERSED_SORT, ///< Sorts reversed lines lexicographically.
     TEST,          ///< Runs some tests.
     ERROR,         ///< ERROR.
 };
 
-Mode parseArguments(int argc, char** argv, char** inFile, char** outFile);
-
-
+static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile);
 
 int main(int argc, char** argv)
 {
-    char*  inputFile_name = NULL;
-    char* outputFIle_name = NULL;
+    char*        inputFile_name = NULL;
+    const char* outputFIle_name = NULL;
 
     Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
 
@@ -105,18 +111,18 @@ int main(int argc, char** argv)
     free(buffer);
 }
 
-// Function to parse command line arguments.
-Mode parseArguments(int argc, char** argv, char** inFile, char** outFile) 
+// Parse command line arguments.
+static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile) 
 {
     Mode mode = ORIGINAL; // Original by default.
 
     *inFile = NULL;
-    char* defaultOuputName = "output.txt";
+    const char* defaultOuputName = "output.txt";
     *outFile = defaultOuputName;
 
     if (argc < 2) 
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> -output <output_file>\n", argv[0]);
+        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>]\n", argv[0]);
         return ERROR;
     }
 
@@ -138,13 +144,13 @@ Mode parseArguments(int argc, char** argv, char** inFile, char** outFile)
         } 
         else 
         {
-            fprintf(stderr, "Invalid option or argument: %s\n", argv[i]);
+            fprintf(stderr, "Invalid option or missing argument: %s\n", argv[i]);
             return ERROR;
         }
     }
     if (*inFile == NULL)
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> -output <output_file>\n", argv[0]);
+        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>ЫЫЫЫЫЫЫЫ\n", argv[0]);
         return ERROR;
     }
 
