@@ -1,5 +1,6 @@
 #include "..\include\sortingOperations.h"
 
+// Copypasted^{tm}
 int compare_ints(const void* a, const void* b)
 {
     int arg1 = *(const int*)a;
@@ -51,11 +52,11 @@ int compareReversedLines(const char* str1, size_t len1, const char* str2, size_t
         }
 
         // Compare the letters ignoring the register.
-        if(int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) > 0)
+        if(tolower(cStr2[index2]) - tolower(cStr1[index1]) > 0)
         {
             return -1;
         }
-        else if (int(tolower(cStr2[index2])) - int(tolower(cStr1[index1])) < 0)
+        else if (tolower(cStr2[index2]) - tolower(cStr1[index1]) < 0)
         {
             return 1;
         }
@@ -80,8 +81,6 @@ int compareLinePointersToReversedLines(const void* pline1, const void* pline2)
 
     return compareReversedLines(line1->str, line1->len, line2->str, line2->len);
 }
-
-
 
 int compareLines(const char* str1, const char* str2)
 {
@@ -136,34 +135,30 @@ int compareLines(const char* str1, const char* str2)
     return 0;
 }
 
+
 static void swap(void* str1, void* str2, const size_t elemSize)
 {
     assert(str1 != NULL && str2 != NULL);
-    size_t i = 0;
 
-    long* long1 = (long*)str1; 
-    long* long2 = (long*)str2; 
-    long temp = 0l;
+    // int currentSize = elemSize;
 
-    for (i = 0; i < elemSize / sizeof(long); i++)
-    {
-        memcpy(&temp, long1, sizeof(long));
-        memcpy(long1, long2, sizeof(long)); // can be easier, but i'm too lasy
-        memcpy(long2, &temp, sizeof(long));
-    }
-
+    // while (currentSize > sizeof(long))
+    // {
+    //     long temp    = *(long*)str1;
+    //     *(long*)str2 = *(long*)str1;
+    //     *(long*)str2 = temp;
+    //     currentSize -= sizeof(long);
+    // }
+    
     char* char1 = (char*)str1;
     char* char2 = (char*)str2;
-    char ctemp = '0';
 
-    for (size_t j = 0; j < elemSize - i * sizeof(long); j++)
+    for (int j = 0; j < elemSize; j++)
     {
-        ctemp = char1[j];
+        char ctemp = char1[j];
         char1[j] = char2[j];
         char2[j] = ctemp;
-    }
-    
-     
+    } 
 }
 
 void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
@@ -187,9 +182,13 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
 
 static size_t partition(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
 {
+    //printf("\t\tpartition:\n");
+    
     int pivoIndex = high;
     while (low < high)
     {
+        //printf("\tlow = %d, high = %d\n", low, high);
+     
         while (compare((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize)) < 0 && low < high)
         {
             low++;
@@ -200,7 +199,8 @@ static size_t partition(void* arr, int low, int high, size_t elemSize, int (*com
         }
         swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + high * elemSize), elemSize);
     }
-    swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize), sizeof(int));
+    
+    swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize), elemSize);
     return low;
 }
 
@@ -209,11 +209,11 @@ static void qsortRecursion(void* arr, int low, int high, size_t elemSize, int (*
     if (low < high && high > 0)
     {
         int pivoIndex = partition(arr, low, high, elemSize, compare);
+    
         qsortRecursion(arr, low          , pivoIndex - 1, elemSize, compare);
         qsortRecursion(arr, pivoIndex + 1, high         , elemSize, compare);
     }
 }
-
 
 void my_qsort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
 {

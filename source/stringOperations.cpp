@@ -27,6 +27,7 @@ char* FileToBuffer(size_t* size, const char* FILE_NAME)
     }
 
     *size = fread(buf, sizeof(char), *size, file);
+    /* ERROR!!!! */
     buf[*size] = '\0';
 
     fclose(file);
@@ -108,12 +109,10 @@ line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
         return NULL;
     }
 
-
     size_t line = 0U;
 
     text[line].str = buffer;
     line++;
-
 
     char* newLine = buffer;
     char* oldLine = buffer;
