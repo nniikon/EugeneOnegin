@@ -34,4 +34,8 @@ This GitHub repository contains a simple text processing tool that takes input f
 
 4. You can also choose other sorting options (`-r` or `-o`) as per your requirements.
 
+## Note on Character Handling
+
+The program focuses specifically on alphabetic characters and is not case-sensitive. It ignores any special characters, digits, or spaces, concentrating only on the letters within the lines.
+
 Feel free to contribute to this project or provide feedback. Happy sorting!
