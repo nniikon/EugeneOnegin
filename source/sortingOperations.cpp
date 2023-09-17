@@ -142,15 +142,15 @@ static void swap(void* str1, void* str2, const size_t elemSize)
 
     int currentSize = elemSize;
 
-    while(currentSize >= int(sizeof(long)))
+    while(currentSize >= int(sizeof(__int64)))
     {
-        long ltemp = *((long*)str1);
-        *((long*)str1) = *((long*)str2);
-        *((long*)str2) = ltemp;
+        __int64 ltemp = *((__int64*)str1);
+        *((__int64*)str1) = *((__int64*)str2);
+        *((__int64*)str2) = ltemp;
         currentSize -= sizeof(long);
 
-        str1 = (void*)((size_t)str1 + sizeof(long));
-        str2 = (void*)((size_t)str2 + sizeof(long));
+        str1 = (void*)((size_t)str1 + sizeof(__int64));
+        str2 = (void*)((size_t)str2 + sizeof(__int64));
     } 
 
     
