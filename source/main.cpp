@@ -59,7 +59,8 @@ int main(int argc, char** argv)
         printf("-s \t\t Standart sorting.              \n"
                "-r \t\t Sorting of the reversed lines. \n"
                "-o \t\t No sorting (original).         \n"
-               "-h \t\t Prints this message.           \n");
+               "-h \t\t Prints this message.           \n"
+               "-t \t\t Run tests.                     \n");
         return NO_ERROR;
     }
 
