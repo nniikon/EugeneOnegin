@@ -141,13 +141,15 @@ static void swap(void* str1, void* str2, const size_t elemSize)
     assert(str1 != NULL && str2 != NULL);
 
     int currentSize = elemSize;
-
+    // printf("\t\tWHILE START\n");
     while(currentSize >= int(sizeof(__int64)))
     {
+        // printf("1current size = %d\n", currentSize);
         __int64 ltemp = *((__int64*)str1);
         *((__int64*)str1) = *((__int64*)str2);
         *((__int64*)str2) = ltemp;
-        currentSize -= sizeof(long);
+        currentSize -= sizeof(__int64);
+        // printf("2current size = %d\n", currentSize);
 
         str1 = (void*)((size_t)str1 + sizeof(__int64));
         str2 = (void*)((size_t)str2 + sizeof(__int64));
