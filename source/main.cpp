@@ -56,14 +56,15 @@ int main(int argc, char** argv)
 
     if (mode == MODE_HELP)
     {
-        printf("-s \t\t Standart sorting.              \n"
-               "-r \t\t Sorting of the reversed lines. \n"
-               "-o \t\t No sorting (original).         \n"
-               "-h \t\t Prints this message.           \n"
-               "-t \t\t Run tests.                     \n");
+        printf("-s      Standart sorting.              \n"
+               "-r      Sorting of the reversed lines. \n"
+               "-o      No sorting (original).         \n"
+               "-h      Prints this message.           \n"
+               "-t      Run tests.                     \n");
         return NO_ERROR;
     }
 
+    // MEM_WARNING: outputFile was opened.
     FILE* outputFile = fopen(outputFIle_name, "w");
     if (outputFile == NULL)
     {
@@ -71,30 +72,35 @@ int main(int argc, char** argv)
         return FILE_OPEN_ERROR;
     }
 
-
     // Create a buffer.
     ssize_t sizeErr = getFileSize(inputFile_name);
     if (sizeErr == -1)
         return STAT_ERROR;
     size_t size = (size_t)sizeErr;
 
+    // MEM_WARNING: buffer was allocated.
     char* buffer = FileToBuffer(&size, inputFile_name);
     if (buffer == NULL)
+    {
+        free(buffer);
         return FILE_OPEN_ERROR;
-
+    }
     // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
     deleteRepetitiveCharacters(buffer, '\n');
     size_t nLines = 0;
 
+
+
+    // MEM_WARNING: txt was allocated.
     // Parse the buffer into the lines using \n as a delimiter.
     line* txt = parseBufferToLines(buffer, &nLines, '\n');
     if (txt == NULL)
+    {
+        free(buffer);
         return MEM_ALLOCATION_ERROR;
+    }
 
-
-    // buffer should look like: "aaa \n bbb \n ccc \n asdasd \0 "  
-    
     switch (mode)
     {
         case MODE_ORIGINAL:
