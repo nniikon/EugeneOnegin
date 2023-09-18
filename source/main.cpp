@@ -5,7 +5,6 @@
 /*
 TODO:
 - lexogra... change comments
-- add -h
 - better README 
 - bubble sort or qsort arg option
 - shorter partition lines
@@ -57,15 +56,12 @@ int main(int argc, char** argv)
 
     if (mode == MODE_HELP)
     {
-        const char* helpText = 
-                "-s \t\t Standart sorting. \n"
-                "-r \t\t Sorting of the reversed lines. \n"
-                "-o \t\t No sorting (original). \n"
-                "-h \t\t Prints this message. \n";
-        printf("%s", helpText);
+        printf("-s \t\t Standart sorting.              \n"
+               "-r \t\t Sorting of the reversed lines. \n"
+               "-o \t\t No sorting (original).         \n"
+               "-h \t\t Prints this message.           \n");
         return NO_ERROR;
     }
-
 
     FILE* outputFile = fopen(outputFIle_name, "w");
     if (outputFile == NULL)
