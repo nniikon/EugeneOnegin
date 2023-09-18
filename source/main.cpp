@@ -4,13 +4,11 @@
 
 /*
 TODO:
-- better swap function 
 - lexogra... change comments
 - add -h
 - better README 
 - bubble sort or qsort arg option
 - shorter partition lines
-- MODE_ prefixes
 - Better error and free(), close() handling.
     Change return values for that
 - wrap File to normilized buffer into a function
