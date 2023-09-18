@@ -32,6 +32,7 @@ enum Mode
     MODE_STRAIGHT_SORT, ///< Sorts lines lexicographically.
     MODE_REVERSED_SORT, ///< Sorts reversed lines lexicographically.
     MODE_TEST,          ///< Runs some tests.
+    MODE_HELP,          ///< Prints help commands.
     MODE_ERROR,         ///< ERROR.
 };
 
@@ -52,6 +53,17 @@ int main(int argc, char** argv)
         testCompareString();
         testSorting(qsort, compare_ints);
         return 0;
+    }
+
+    if (mode == MODE_HELP)
+    {
+        const char* helpText = 
+                "-s \t\t Standart sorting. \n"
+                "-r \t\t Sorting of the reversed lines. \n"
+                "-o \t\t No sorting (original). \n"
+                "-h \t\t Prints this message. \n";
+        printf("%s", helpText);
+        return NO_ERROR;
     }
 
 
@@ -103,6 +115,8 @@ int main(int argc, char** argv)
             return UNEXPECTED_ERROR;
         case MODE_TEST:
             return UNEXPECTED_ERROR;
+        case MODE_HELP:
+            return UNEXPECTED_ERROR;
         default:
             return UNEXPECTED_ERROR;
     }
@@ -123,16 +137,17 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
 
     if (argc < 2) 
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>]\n", argv[0]);
+        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o|-h] -input <input_file> [-output <output_file>]\n", argv[0]);
         return MODE_ERROR;
     }
 
     for (int i = 1; i < argc; i++) 
     {
-        if      (strcmp(argv[i], "-s") == 0)  mode = MODE_STRAIGHT_SORT; 
-        else if (strcmp(argv[i], "-r") == 0)  mode = MODE_REVERSED_SORT; 
-        else if (strcmp(argv[i], "-o") == 0)  mode = MODE_ORIGINAL; 
-        else if (strcmp(argv[i], "-t") == 0)  return MODE_TEST;
+        if      (strcmp(argv[i], "-s") == 0)    mode = MODE_STRAIGHT_SORT; 
+        else if (strcmp(argv[i], "-r") == 0)    mode = MODE_REVERSED_SORT; 
+        else if (strcmp(argv[i], "-o") == 0)    mode = MODE_ORIGINAL; 
+        else if (strcmp(argv[i], "-t") == 0)    return MODE_TEST;
+        else if (strcmp(argv[i], "-h") == 0)    return MODE_HELP;
         else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc) 
         {
             *inFile = argv[i + 1];
@@ -151,7 +166,7 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
     }
     if (*inFile == NULL)
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>ЫЫЫЫЫЫЫЫ\n", argv[0]);
+        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o|-h] -input <input_file> [-output <output_file>ЫЫЫЫЫЫЫЫ\n", argv[0]);
         return MODE_ERROR;
     }
 
