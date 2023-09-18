@@ -30,11 +30,11 @@ enum Error
 /// @brief Represents the program's operating mode.
 enum Mode
 {
-    /*MODE_*/ORIGINAL,      ///< Copies the original text.
-    STRAIGHT_SORT, ///< Sorts lines lexicographically.
-    REVERSED_SORT, ///< Sorts reversed lines lexicographically.
-    TEST,          ///< Runs some tests.
-    ERROR,         ///< ERROR.
+    MODE_ORIGINAL,      ///< Copies the original text.
+    MODE_STRAIGHT_SORT, ///< Sorts lines lexicographically.
+    MODE_REVERSED_SORT, ///< Sorts reversed lines lexicographically.
+    MODE_TEST,          ///< Runs some tests.
+    MODE_ERROR,         ///< ERROR.
 };
 
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile);
@@ -46,10 +46,10 @@ int main(int argc, char** argv)
 
     Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
 
-    if (mode == ERROR)
+    if (mode == MODE_ERROR)
         return INVALID_ARGS;
         
-    if (mode == TEST)
+    if (mode == MODE_TEST)
     {
         testCompareString();
         testSorting(qsort, compare_ints);
@@ -90,20 +90,23 @@ int main(int argc, char** argv)
     
     switch (mode)
     {
-        case ORIGINAL:
+        case MODE_ORIGINAL:
             fputs(buffer, outputFile);
             break;
-        case STRAIGHT_SORT:
+        case MODE_STRAIGHT_SORT:
             my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToLines);
             printTextToFile(txt, outputFile, '\n');
             break;
-        case REVERSED_SORT:
+        case MODE_REVERSED_SORT:
             my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedLines);
             printTextToFile(txt, outputFile, '\n');
             break;
+        case MODE_ERROR:
+            return UNEXPECTED_ERROR;
+        case MODE_TEST:
+            return UNEXPECTED_ERROR;
         default:
             return UNEXPECTED_ERROR;
-            break;
     }
 
     fclose(outputFile);
@@ -114,7 +117,7 @@ int main(int argc, char** argv)
 // Parse command line arguments.
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile) 
 {
-    Mode mode = ORIGINAL; // Original by default.
+    Mode mode = MODE_ERROR; // Original by default.
 
     *inFile = NULL;
     const char* defaultOuputName = "output.txt";
@@ -123,15 +126,15 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
     if (argc < 2) 
     {
         fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>]\n", argv[0]);
-        return ERROR;
+        return MODE_ERROR;
     }
 
     for (int i = 1; i < argc; i++) 
     {
-        if      (strcmp(argv[i], "-s") == 0)  mode = STRAIGHT_SORT; 
-        else if (strcmp(argv[i], "-r") == 0)  mode = REVERSED_SORT; 
-        else if (strcmp(argv[i], "-o") == 0)  mode = ORIGINAL; 
-        else if (strcmp(argv[i], "-t") == 0)  return TEST;
+        if      (strcmp(argv[i], "-s") == 0)  mode = MODE_STRAIGHT_SORT; 
+        else if (strcmp(argv[i], "-r") == 0)  mode = MODE_REVERSED_SORT; 
+        else if (strcmp(argv[i], "-o") == 0)  mode = MODE_ORIGINAL; 
+        else if (strcmp(argv[i], "-t") == 0)  return MODE_TEST;
         else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc) 
         {
             *inFile = argv[i + 1];
@@ -145,13 +148,13 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
         else 
         {
             fprintf(stderr, "Invalid option or missing argument: %s\n", argv[i]);
-            return ERROR;
+            return MODE_ERROR;
         }
     }
     if (*inFile == NULL)
     {
         fprintf(stderr, "Invalid options, use: %s [-s|-r|-o] -input <input_file> [-output <output_file>ЫЫЫЫЫЫЫЫ\n", argv[0]);
-        return ERROR;
+        return MODE_ERROR;
     }
 
     return mode;
