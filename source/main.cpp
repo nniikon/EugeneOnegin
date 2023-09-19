@@ -144,7 +144,7 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
         } 
         else 
         {
-            fprintf(stderr, invalidOptionErrorText, argv[i]);
+            fprintf(stderr, invalidOptionErrorText, argv[0]);
             return MODE_ERROR;
         }
     }
