@@ -8,7 +8,6 @@ TODO:
 - better README 
 - bubble sort or qsort arg option
 - shorter partition lines
-- wrap File to normilized buffer into a function
 - fix printLineToFile();
 */
 
@@ -24,9 +23,11 @@ enum Mode
     MODE_ERROR,         ///< ERROR.
 };
 
+
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile);
 static void help();
 static void runTests();
+
 
 int main(int argc, char** argv)
 {
@@ -77,6 +78,7 @@ int main(int argc, char** argv)
         return error;
     }
 
+    // Decide what to do with the buffer based on the mode.
     switch (mode)
     {
         case MODE_ORIGINAL:
@@ -101,7 +103,12 @@ int main(int argc, char** argv)
 
     free(txt);
     free(buffer);
+    return error;
 }
+
+
+
+
 
 // Parse command line arguments.
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile) 
@@ -150,6 +157,7 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
     return mode;
 }
 
+
 static void help()
 {
     printf("-s      Standart sorting.              \n"
@@ -158,6 +166,7 @@ static void help()
            "-h      Prints this message.           \n"
            "-t      Run tests.                     \n");
 }
+
 
 static void runTests()
 {

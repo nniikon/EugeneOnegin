@@ -10,6 +10,7 @@ void printTextToFile(line* txt, FILE* file, const char delim)
 
 }
 
+
 Error FileToBuffer(char** buffer, const size_t size, const char* FILE_NAME)
 {
     char* buf = (char*)calloc(size + 1, sizeof(char));
@@ -134,6 +135,7 @@ Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const cha
     *dstLine = text;
     return NO_ERROR;
 }
+
 
 void printLineToFile(const char* input, const char delim, FILE* file)
 {

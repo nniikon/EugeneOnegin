@@ -86,5 +86,4 @@ void testSorting(void (*sort)(void*, size_t, size_t, int (*cmp)(const void*, con
     }
     
     printf("%50s", "SORTING TEST PASSED\n");
-    
 }

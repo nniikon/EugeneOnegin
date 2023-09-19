@@ -74,6 +74,7 @@ int compareLinePointersToLines(const void* pline1, const void* pline2)
     return compareLines(line1->str, line2->str);
 }
 
+
 int compareLinePointersToReversedLines(const void* pline1, const void* pline2) 
 {
     const line* line1 = (const line*)pline1;
@@ -81,6 +82,7 @@ int compareLinePointersToReversedLines(const void* pline1, const void* pline2)
 
     return compareReversedLines(line1->str, line1->len, line2->str, line2->len);
 }
+
 
 int compareLines(const char* str1, const char* str2)
 {
@@ -167,6 +169,7 @@ static void swap(void* str1, void* str2, const size_t elemSize)
     } 
 }
 
+
 void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const void*, const void*))
 {
     size_t unsortedSize = arrSize;
@@ -185,6 +188,7 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
         unsortedSize--;
     }
 }
+
 
 static size_t partition(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
 {
