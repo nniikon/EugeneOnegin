@@ -22,45 +22,45 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
 
 
 /**
- * @brief Compares two lines for alphabetical order.
+ * @brief Compares two lines lexicographically.
  *
  * @param str1 First  string.
  * @param str2 Second string.
  *
- * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
+ * @return `-1` if str1 < str2, `1` if str1 > str2, `0` if equal.
  */
 int compareLines(const char* str1, const char* str2);
 
 
 /**
- * @brief Compares two reversed lines for alphabetical order.
+ * @brief Compares two reversed lines lexicographically.
  *
  * @param str1 First  string.
  * @param str2 Second string.
  *
- * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
+ * @return `-1` if r_str1 < r_str2, `1` if r_str1 > r_str2, `0` if equal.
  */
 int compareReversedLines(const char* str1, size_t len1, const char* str2, size_t len2);
 
 
 /**
- * @brief Compares two line* pointers for alphabetical order.
+ * @brief Compares two line* pointers lexicographically.
  *
  * @param pstr1 First  pointer.
  * @param pstr2 Second pointer.
  *
  * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
  */
-int compareLinePointersToLines(const void* pline1, const void* pline2);
+int compareLinePointersToStrings(const void* pline1, const void* pline2);
 
 /**
- * @brief Compares two line* pointers for alphabetical order in reversed lines.
+ * @brief Compares two line* pointers lexicographically.
  *
  * @param pstr1 First  pointer.
  * @param pstr2 Second pointer.
  *
  * @return `-1` if in alphabetical order, `1` if not in alphabetical order, `0` if equal.
  */
-int compareLinePointersToReversedLines(const void* pline1, const void* pline2);
+int compareLinePointersToReversedStrings(const void* pline1, const void* pline2);
 
 #endif

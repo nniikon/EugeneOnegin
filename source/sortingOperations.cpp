@@ -66,7 +66,7 @@ int compareReversedLines(const char* str1, size_t len1, const char* str2, size_t
 }
 
 
-int compareLinePointersToLines(const void* pline1, const void* pline2) 
+int compareLinePointersToStrings(const void* pline1, const void* pline2) 
 {
     const line* line1 = (const line*)pline1;
     const line* line2 = (const line*)pline2;
@@ -75,7 +75,7 @@ int compareLinePointersToLines(const void* pline1, const void* pline2)
 }
 
 
-int compareLinePointersToReversedLines(const void* pline1, const void* pline2) 
+int compareLinePointersToReversedStrings(const void* pline1, const void* pline2) 
 {
     const line* line1 = (const line*)pline1;
     const line* line2 = (const line*)pline2;

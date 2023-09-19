@@ -85,11 +85,11 @@ int main(int argc, char** argv)
             fputs(buffer, outputFile);
             break;
         case MODE_STRAIGHT_SORT:
-            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToLines);
+            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToStrings);
             printTextToFile(txt, outputFile, '\n');
             break;
         case MODE_REVERSED_SORT:
-            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedLines);
+            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedStrings);
             printTextToFile(txt, outputFile, '\n');
             break;
         case MODE_ERROR:
