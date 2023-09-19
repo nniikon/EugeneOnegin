@@ -14,15 +14,6 @@ TODO:
 - fix printLineToFile();
 */
 
-enum Error
-{
-    NO_ERROR,
-    FILE_OPEN_ERROR,
-    MEM_ALLOCATION_ERROR,
-    STAT_ERROR,
-    INVALID_ARGS,
-    UNEXPECTED_ERROR,
-};
 
 /// @brief Represents the program's operating mode.
 enum Mode
@@ -41,6 +32,7 @@ int main(int argc, char** argv)
 {
     char*        inputFile_name = NULL;
     const char* outputFIle_name = NULL;
+    Error error = NO_ERROR;
 
     Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
 
@@ -73,18 +65,23 @@ int main(int argc, char** argv)
     }
 
     // Create a buffer.
-    ssize_t sizeErr = getFileSize(inputFile_name);
-    if (sizeErr == -1)
-        return STAT_ERROR;
-    size_t size = (size_t)sizeErr;
+    size_t size = 0;
+    error = getFileSize(inputFile_name, &size);
+    if (error != NO_ERROR)
+    {
+        fclose(outputFile);
+        return error;
+    }
 
     // MEM_WARNING: buffer was allocated.
-    char* buffer = FileToBuffer(&size, inputFile_name);
-    if (buffer == NULL)
+    char* buffer = NULL;
+    error = FileToBuffer(&buffer, size, inputFile_name);
+    if (error != NO_ERROR)
     {
         free(buffer);
         return FILE_OPEN_ERROR;
     }
+
     // Replace different EOL symbols on '\n'.
     replaceCharacter          (buffer, '\r', '\n');
     deleteRepetitiveCharacters(buffer, '\n');
@@ -124,7 +121,6 @@ int main(int argc, char** argv)
             return UNEXPECTED_ERROR;
     }
 
-    fclose(outputFile);
     free(txt);
     free(buffer);
 }

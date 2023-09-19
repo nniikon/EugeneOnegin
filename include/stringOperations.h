@@ -11,6 +11,18 @@
 #include <limits.h>
 
 
+enum Error
+{
+    NO_ERROR,
+    FILE_OPEN_ERROR,
+    MEM_ALLOCATION_ERROR,
+    STAT_ERROR,
+    INVALID_ARGS,
+    UNEXPECTED_ERROR,
+    FREAD_ERROR,
+};
+
+
 /// @brief A structure for storing a `char*` string along with it's length.
 struct line
 {
@@ -34,23 +46,25 @@ void printTextToFile(line* txt, FILE* file, const char delim);
  *
  * This function copies information from the provided file to the allocated char* array
  *
- * @param size[in,out]  A size of the file. Changes to the real amount of read symbols. 
- * @param FILE_NAME[in] A name of the file.
+ * @param size[in]       A size of the file. 
+ * @param FILE_NAME[in]  A name of the file.
+ * @param buffer[in,out] A pointer to a buffer of the data from the file.
  * 
- * @return A pointer to the buffer.
+ * @return The `Error` code.
  *
  * @note Don't forget to `free()` the given pointer.
  */
-char* FileToBuffer(size_t* size, const char* FILE_NAME);
+Error FileToBuffer(char** buffer, const size_t size, const char* FILE_NAME);
 
 /**
  * @brief Gets a file size by it's name.
  *
- * @param fileName The file name.
+ * @param[in]  fileName The file name.
+ * @param[out] size     Pointer to the size of the file to be set.
  * 
- * @return If successful, returns the size of the file. On error, returns `-1`.
+ * @return The `Error` code.
  */
-ssize_t getFileSize(const char* fileName);
+Error getFileSize(const char* fileName, size_t* size);
 
 /**
  * @brief Removes all consecutive occurrences of the given character in the string.

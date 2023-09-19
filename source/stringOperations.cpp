@@ -1,5 +1,6 @@
 #include "..\include\stringOperations.h"
 
+
 void printTextToFile(line* txt, FILE* file, const char delim)
 {
     for (int i = 0; txt[i].str; i++)
@@ -9,44 +10,48 @@ void printTextToFile(line* txt, FILE* file, const char delim)
 
 }
 
-char* FileToBuffer(size_t* size, const char* FILE_NAME)
+Error FileToBuffer(char** buffer, const size_t size, const char* FILE_NAME)
 {
-    char* buf = (char*)calloc(*size + 1, sizeof(char));
+    char* buf = (char*)calloc(size + 1, sizeof(char));
     if (buf == NULL)
     {
         perror("Memory allocation error");
-        return NULL;
+        return MEM_ALLOCATION_ERROR;
     }
-    
 
     FILE* file = fopen(FILE_NAME, "rb");
     if (file == NULL)
     {
         perror("File opening error");
-        return NULL;
+        return FILE_OPEN_ERROR;
     }
 
-    *size = fread(buf, sizeof(char), *size, file);
-    /* ERROR!!!! */
-    buf[*size] = '\0';
-
+    if (fread(buf, sizeof(char), size, file) != size)
+    {
+        perror("Reading from file error.");
+        return FREAD_ERROR;
+    }
     fclose(file);
 
-    return buf;
+    buf[size] = '\0';
+    *buffer = buf;
+
+    return NO_ERROR;
 }
 
 
-ssize_t getFileSize(const char* fileName)
+Error getFileSize(const char* fileName, size_t* size)
 {
     struct stat bf = {};
-    ssize_t error = stat(fileName, &bf);
+    int error = stat(fileName, &bf);
     if (error == -1)
     {
         perror("Stat error");
-        return error;
+        return STAT_ERROR;
     }
-    
-    return bf.st_size;
+
+    *size = bf.st_size;
+    return NO_ERROR;
 }
 
 
