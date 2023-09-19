@@ -37,9 +37,8 @@ struct line
  *
  * @param txt   The struct text array.
  * @param file  The opened for writing file.
- * @param delim The symbol each `line[i].str` is ending with.
  */
-void printTextToFile(line* txt, FILE* file, const char delim);
+void printTextToFile(line* txt, FILE* file);
 
 /**
  * @brief Moves data from a file to the buffer.
@@ -93,15 +92,6 @@ void replaceCharacter(char input[], const char dst, const char src);
 size_t nCharactersInString(const char input[], const char chr);
 
 /**
- * @brief Prints a string to the file and stops at the given delimiter.
- *
- * @param[in] input The input string.
- * @param[in] delim The delimiter.
- * @param[in] file  The file.
- */
-void printLineToFile(const char* input, const char delim, FILE* file);
-
-/**
  * @brief Returns an array of pointer, each pointing to the start of a new line.
  *
  * @param[in]  buffer    The buffer that needs to be parsed.
@@ -115,8 +105,18 @@ void printLineToFile(const char* input, const char delim, FILE* file);
 */
 Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const char delimiter);
 
-
-
+/**
+ * Takes data from a file and puts it into an allocated buffer.
+ * This function replaced all EOL symbols with \\n.
+ * The buffer is null-terminated.
+ *
+ * @param[in]  fileName  A name of the fuke
+ * @param[out] dstBuffer A pointer to the buffer.
+ * 
+ * @return The `Error` code.
+ *
+ * @note Don't forget to `free()` the given pointer.
+*/
 Error fileToNormilizedBuffer(const char* fileName, char** dstBuffer);
 
 #endif
