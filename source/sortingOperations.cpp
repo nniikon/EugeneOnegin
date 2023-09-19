@@ -190,7 +190,7 @@ static size_t partition(void* arr, int low, int high, size_t elemSize, int (*com
 {
     //printf("\t\tpartition:\n");
     
-    int pivoIndex = high;
+    int pivoIndex = (high + low)/2;
     while (low < high)
     {
         //printf("\tlow = %d, high = %d\n", low, high);
@@ -212,6 +212,8 @@ static size_t partition(void* arr, int low, int high, size_t elemSize, int (*com
 
 static void qsortRecursion(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
 {
+    if (high - low < 4)
+        return bubbleSort(arr, (size_t)(high-low+1), elemSize, compare);
     if (low < high && high > 0)
     {
         int pivoIndex = partition(arr, low, high, elemSize, compare);
