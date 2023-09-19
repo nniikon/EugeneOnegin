@@ -2,14 +2,6 @@
 #include "..\include\sortingOperations.h"
 #include "..\include\test.h"
 
-/*
-TODO:
-- better README 
-- bubble sort or qsort arg option
-- shorter partition lines
-- fix printLineToFile();
-*/
-
 
 /// @brief Represents the program's operating mode.
 enum Mode
@@ -87,11 +79,11 @@ int main(int argc, char** argv)
             break;
         case MODE_STRAIGHT_SORT:
             sort((void*)(txt), nLines, sizeof(line), compareLinePointersToStrings);
-            printTextToFile(txt, outputFile, '\n');
+            printTextToFile(txt, outputFile);
             break;
         case MODE_REVERSED_SORT:
             sort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedStrings);
-            printTextToFile(txt, outputFile, '\n');
+            printTextToFile(txt, outputFile);
             break;
         case MODE_ERROR:
         case MODE_TEST:
@@ -115,11 +107,11 @@ int main(int argc, char** argv)
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile,
                            void (**sort)(void*, size_t, size_t, int (*)(const void*, const void*)))
 {
-    Mode mode = MODE_ERROR; // ERROR      by default.
+    Mode mode = MODE_ORIGINAL; // Original   by default.
     *sort = my_qsort;          // Quick sort by default.
 
     const char invalidOptionErrorText[] = 
-    "Invalid options or missing argument, use: %s [-s|-r|-o|-h] -input <input_file> [-output] <output_file>\n";
+    "Invalid options or missing argument, use: %s [-s|-r|-o] [-qsort|-bubble] [-h|-t] -input <input_file> [-output] <output_file>\n";
 
     *inFile = NULL;
     const char* defaultOuputName = "output.txt";
@@ -171,11 +163,13 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
 
 static void help()
 {
-    printf("-s      Standart sorting.              \n"
-           "-r      Sorting of the reversed lines. \n"
-           "-o      No sorting (original).         \n"
-           "-h      Prints this message.           \n"
-           "-t      Run tests.                     \n");
+    printf("-s      Standart sorting.                     \n"
+           "-r      Sorting of the reversed lines.        \n"
+           "-o      No sorting (by default).              \n"
+           "-h      Prints this message.                  \n"
+           "-t      Run tests.                            \n"
+           "-qsort  Use quick sort algorithm (by default) \n"
+           "-bubble Use bubble sort algorithm             \n");
 }
 
 
