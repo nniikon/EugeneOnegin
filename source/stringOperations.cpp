@@ -1,11 +1,12 @@
 #include "..\include\stringOperations.h"
 
 
-void printTextToFile(line* txt, FILE* file, const char delim)
+void printTextToFile(line* txt, FILE* file)
 {
     for (int i = 0; txt[i].str; i++)
     {
-        printLineToFile(txt[i].str, delim, file);
+        fwrite(txt[i].str, sizeof(char), txt[i].len, file);
+        putc('\n', file);
     }
 
 }
@@ -134,16 +135,6 @@ Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const cha
 
     *dstLine = text;
     return NO_ERROR;
-}
-
-
-void printLineToFile(const char* input, const char delim, FILE* file)
-{
-    for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
-    {
-        fputc(input[i], file); // <----------------------------- fix slow
-    }
-    fputc('\n', file);
 }
 
 
