@@ -8,8 +8,6 @@ TODO:
 - better README 
 - bubble sort or qsort arg option
 - shorter partition lines
-- Better error and free(), close() handling.
-    Change return values for that
 - wrap File to normilized buffer into a function
 - fix printLineToFile();
 */
@@ -27,6 +25,8 @@ enum Mode
 };
 
 static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile);
+static void help();
+static void runTests();
 
 int main(int argc, char** argv)
 {
@@ -41,18 +41,13 @@ int main(int argc, char** argv)
         
     if (mode == MODE_TEST)
     {
-        testCompareString();
-        testSorting(qsort, compare_ints);
-        return 0;
+        runTests();
+        return NO_ERROR;
     }
 
     if (mode == MODE_HELP)
     {
-        printf("-s      Standart sorting.              \n"
-               "-r      Sorting of the reversed lines. \n"
-               "-o      No sorting (original).         \n"
-               "-h      Prints this message.           \n"
-               "-t      Run tests.                     \n");
+        help();
         return NO_ERROR;
     }
 
@@ -64,37 +59,20 @@ int main(int argc, char** argv)
         return FILE_OPEN_ERROR;
     }
 
-    // Create a buffer.
-    size_t size = 0;
-    error = getFileSize(inputFile_name, &size);
-    if (error != NO_ERROR)
-    {
-        fclose(outputFile);
-        return error;
-    }
-
-    // MEM_WARNING: buffer was allocated.
     char* buffer = NULL;
-    error = FileToBuffer(&buffer, size, inputFile_name);
+    // MEM_WARNING: buffer was allocated.
+    error = fileToNormilizedBuffer(inputFile_name, &buffer);
     if (error != NO_ERROR)
-    {
-        free(buffer);
         return error;
-    }
 
-    // Replace different EOL symbols on '\n'.
-    replaceCharacter          (buffer, '\r', '\n');
-    deleteRepetitiveCharacters(buffer, '\n');
     size_t nLines = 0;
-
-
-
+    line* txt = NULL;
     // MEM_WARNING: txt was allocated.
     // Parse the buffer into the lines using \n as a delimiter.
-    line* txt = NULL;
     error = parseBufferToLines(&txt, buffer, &nLines, '\n');
     if (error != NO_ERROR)
     {
+        free(txt);
         free(buffer);
         return error;
     }
@@ -113,12 +91,11 @@ int main(int argc, char** argv)
             printTextToFile(txt, outputFile, '\n');
             break;
         case MODE_ERROR:
-            return UNEXPECTED_ERROR;
         case MODE_TEST:
-            return UNEXPECTED_ERROR;
         case MODE_HELP:
-            return UNEXPECTED_ERROR;
         default:
+            free(txt);
+            free(buffer);
             return UNEXPECTED_ERROR;
     }
 
@@ -171,4 +148,19 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
     }
 
     return mode;
+}
+
+static void help()
+{
+    printf("-s      Standart sorting.              \n"
+           "-r      Sorting of the reversed lines. \n"
+           "-o      No sorting (original).         \n"
+           "-h      Prints this message.           \n"
+           "-t      Run tests.                     \n");
+}
+
+static void runTests()
+{
+    testCompareString();
+    testSorting(qsort, compare_ints);
 }

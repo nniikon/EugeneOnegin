@@ -15,20 +15,20 @@ Error FileToBuffer(char** buffer, const size_t size, const char* FILE_NAME)
     char* buf = (char*)calloc(size + 1, sizeof(char));
     if (buf == NULL)
     {
-        perror("Memory allocation error");
+        //perror("Memory allocation error");
         return MEM_ALLOCATION_ERROR;
     }
 
     FILE* file = fopen(FILE_NAME, "rb");
     if (file == NULL)
     {
-        perror("File opening error");
+        //perror("File opening error");
         return FILE_OPEN_ERROR;
     }
 
     if (fread(buf, sizeof(char), size, file) != size)
     {
-        perror("Reading from file error.");
+        //perror("Reading from file error.");
         return FREAD_ERROR;
     }
     fclose(file);
@@ -46,7 +46,7 @@ Error getFileSize(const char* fileName, size_t* size)
     int error = stat(fileName, &bf);
     if (error == -1)
     {
-        perror("Stat error");
+        //perror("Stat error");
         return STAT_ERROR;
     }
 
@@ -110,7 +110,7 @@ Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const cha
     line* text = (line*)calloc(*nLines + 1U, sizeof(line));
     if (text == NULL)
     {
-        perror("Memory allocation error");
+        //perror("Memory allocation error");
         return MEM_ALLOCATION_ERROR;
     }
 
@@ -135,7 +135,6 @@ Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const cha
     return NO_ERROR;
 }
 
-
 void printLineToFile(const char* input, const char delim, FILE* file)
 {
     for (int i = 0; input[i] != delim && input[i] != '\0'; i++)
@@ -143,4 +142,32 @@ void printLineToFile(const char* input, const char delim, FILE* file)
         fputc(input[i], file); // <----------------------------- fix slow
     }
     fputc('\n', file);
+}
+
+
+Error fileToNormilizedBuffer(const char* fileName, char** dstBuffer)
+{
+    size_t size = 0;
+    Error error = NO_ERROR;
+
+    error = getFileSize(fileName, &size);
+    if (error != NO_ERROR)
+        return error;
+
+    // MEM_WARNING: buffer was allocated.
+    char* buffer = NULL;
+    error = FileToBuffer(&buffer, size, fileName);
+    if (error != NO_ERROR)
+    {
+        free(buffer);
+        return error;
+    }
+
+    // Replace different EOL symbols on '\n'.
+    replaceCharacter          (buffer, '\r', '\n');
+    deleteRepetitiveCharacters(buffer, '\n');
+
+    *dstBuffer = buffer;
+
+    return NO_ERROR;
 }

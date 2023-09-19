@@ -115,4 +115,8 @@ void printLineToFile(const char* input, const char delim, FILE* file);
 */
 Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const char delimiter);
 
+
+
+Error fileToNormilizedBuffer(const char* fileName, char** dstBuffer);
+
 #endif
