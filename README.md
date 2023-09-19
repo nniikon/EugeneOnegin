@@ -7,13 +7,16 @@
 This GitHub repository contains a simple text processing tool that takes input from a file and provides three different text sorting options: lexicographical sorting, lexicographical sorting starting from the last character, and displaying the original text. To use this tool, specify the sorting mode with one of the following options [-s|-r|-o], and provide the input and output file paths as follows:
 
 ```bash
-.\build\EugeneOnegin.exe [-s|-r|-o] -input <input_file> -output <output_file>
+.\build\EugeneOnegin.exe [-s|-r|-o] [-qsort|-bubble] [-t|-h] -input <input_file> -output <output_file> 
 ```
 
 ## Usage
 - `-s`: Sort the text lexicographically.
 - `-r`: Sort the text lexicographically starting from the last character.
-- `-o`: Display the original text.
+- `-o`: Display the original text (set by default).
+- `[-qsort]`: use quick sort algorithm (set by default).
+- `[-bubble]`: use bubble sort algorithm.
+- `-h`: for help.
 
 ## Installation
 1. Clone this repository to your local machine using the following command:
