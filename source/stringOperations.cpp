@@ -102,7 +102,7 @@ size_t nCharactersInString(const char input[], const char chr)
 }
 
 
-line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
+Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const char delimiter)
 {
     // If there are 2 \n, there might be 3 lines, hence + 1.
     *nLines = nCharactersInString(buffer, delimiter) + 1U;
@@ -111,7 +111,7 @@ line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
     if (text == NULL)
     {
         perror("Memory allocation error");
-        return NULL;
+        return MEM_ALLOCATION_ERROR;
     }
 
     size_t line = 0U;
@@ -131,7 +131,8 @@ line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter)
     text[line - 1].len = ((size_t)strchr(text[line - 1].str, '\0') - (size_t)text[line - 1].str) / sizeof(char);
     text[*nLines].str = nullptr;
 
-    return text;
+    *dstLine = text;
+    return NO_ERROR;
 }
 
 

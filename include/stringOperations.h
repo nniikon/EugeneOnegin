@@ -107,11 +107,12 @@ void printLineToFile(const char* input, const char delim, FILE* file);
  * @param[in]  buffer    The buffer that needs to be parsed.
  * @param[out] nLines    The number of lines in the buffer.
  * @param[in]  delimiter The symbol that indicates a new line.
+ * @param[out] dstLine   A pointer to the array on `line`, ending with `NULL`.
+ * 
+ * @return The `Error` code.
  *
- * @return An array on `line`, ending with `NULL`.
- *
- * @note Don't forget to `free()` the given pointer
+ * @note Don't forget to `free()` the given pointer.
 */
-line* parseBufferToLines(char* buffer, size_t* nLines, const char delimiter);
+Error parseBufferToLines(line** dstLine, char* buffer, size_t* nLines, const char delimiter);
 
 #endif

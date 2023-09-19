@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     if (error != NO_ERROR)
     {
         free(buffer);
-        return FILE_OPEN_ERROR;
+        return error;
     }
 
     // Replace different EOL symbols on '\n'.
@@ -91,11 +91,12 @@ int main(int argc, char** argv)
 
     // MEM_WARNING: txt was allocated.
     // Parse the buffer into the lines using \n as a delimiter.
-    line* txt = parseBufferToLines(buffer, &nLines, '\n');
-    if (txt == NULL)
+    line* txt = NULL;
+    error = parseBufferToLines(&txt, buffer, &nLines, '\n');
+    if (error != NO_ERROR)
     {
         free(buffer);
-        return MEM_ALLOCATION_ERROR;
+        return error;
     }
 
     switch (mode)
