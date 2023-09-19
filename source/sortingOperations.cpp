@@ -190,7 +190,8 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
 }
 
 
-static size_t partition(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
+static size_t partition(void* arr, int low, int high, size_t elemSize, 
+                        int (*compare)(const void*, const void*))
 {
     //printf("\t\tpartition:\n");
     
@@ -199,22 +200,31 @@ static size_t partition(void* arr, int low, int high, size_t elemSize, int (*com
     {
         //printf("\tlow = %d, high = %d\n", low, high);
      
-        while (compare((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize)) < 0 && low < high)
+        while (compare((void*)((size_t)arr + low * elemSize), 
+                       (void*)((size_t)arr + pivoIndex * elemSize)) < 0
+                        && low < high)
         {
             low++;
         }
-        while (compare((void*)((size_t)arr + high * elemSize), (void*)((size_t)arr + pivoIndex * elemSize)) >= 0 && low < high)
+
+        while (compare((void*)((size_t)arr + high * elemSize), 
+                       (void*)((size_t)arr + pivoIndex * elemSize)) >= 0 
+                        && low < high)
         {
             high--;
         }
-        swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + high * elemSize), elemSize);
+
+        swap((void*)((size_t)arr + low  * elemSize), 
+             (void*)((size_t)arr + high * elemSize), elemSize);
     }
     
-    swap((void*)((size_t)arr + low * elemSize), (void*)((size_t)arr + pivoIndex * elemSize), elemSize);
+    swap((void*)((size_t)arr + low       * elemSize), 
+         (void*)((size_t)arr + pivoIndex * elemSize), elemSize);
     return low;
 }
 
-static void qsortRecursion(void* arr, int low, int high, size_t elemSize, int (*compare)(const void*, const void*))
+static void qsortRecursion(void* arr, int low, int high, size_t elemSize, 
+                           int (*compare)(const void*, const void*))
 {
     if (high - low < 4)
         return bubbleSort(arr, (size_t)(high-low+1), elemSize, compare);
