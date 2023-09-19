@@ -4,7 +4,6 @@
 
 /*
 TODO:
-- lexogra... change comments
 - better README 
 - bubble sort or qsort arg option
 - shorter partition lines
@@ -24,7 +23,8 @@ enum Mode
 };
 
 
-static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile);
+static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile,
+                           void (**sort)(void*, size_t, size_t, int (*)(const void*, const void*)));
 static void help();
 static void runTests();
 
@@ -34,12 +34,13 @@ int main(int argc, char** argv)
     char*        inputFile_name = NULL;
     const char* outputFIle_name = NULL;
     Error error = NO_ERROR;
+    void (*sort)(void*, size_t, size_t, int (*)(const void*, const void*)) = my_qsort;
 
-    Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name);
+    Mode mode = parseArguments(argc, argv, &inputFile_name, &outputFIle_name, &sort);
 
     if (mode == MODE_ERROR)
         return INVALID_ARGS;
-        
+
     if (mode == MODE_TEST)
     {
         runTests();
@@ -85,11 +86,11 @@ int main(int argc, char** argv)
             fputs(buffer, outputFile);
             break;
         case MODE_STRAIGHT_SORT:
-            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToStrings);
+            sort((void*)(txt), nLines, sizeof(line), compareLinePointersToStrings);
             printTextToFile(txt, outputFile, '\n');
             break;
         case MODE_REVERSED_SORT:
-            my_qsort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedStrings);
+            sort((void*)(txt), nLines, sizeof(line), compareLinePointersToReversedStrings);
             printTextToFile(txt, outputFile, '\n');
             break;
         case MODE_ERROR:
@@ -111,9 +112,14 @@ int main(int argc, char** argv)
 
 
 // Parse command line arguments.
-static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile) 
+static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile,
+                           void (**sort)(void*, size_t, size_t, int (*)(const void*, const void*)))
 {
-    Mode mode = MODE_ERROR; // Original by default.
+    Mode mode = MODE_ERROR; // ERROR      by default.
+    *sort = my_qsort;          // Quick sort by default.
+
+    const char invalidOptionErrorText[] = 
+    "Invalid options or missing argument, use: %s [-s|-r|-o|-h] -input <input_file> [-output] <output_file>\n";
 
     *inFile = NULL;
     const char* defaultOuputName = "output.txt";
@@ -121,7 +127,7 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
 
     if (argc < 2) 
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o|-h] -input <input_file> [-output <output_file>]\n", argv[0]);
+        fprintf(stderr, invalidOptionErrorText, argv[0]);
         return MODE_ERROR;
     }
 
@@ -132,6 +138,8 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
         else if (strcmp(argv[i], "-o") == 0)    mode = MODE_ORIGINAL; 
         else if (strcmp(argv[i], "-t") == 0)    return MODE_TEST;
         else if (strcmp(argv[i], "-h") == 0)    return MODE_HELP;
+        else if (strcmp(argv[i], "-qsort")  == 0)    *sort = my_qsort;
+        else if (strcmp(argv[i], "-bubble") == 0)    *sort = bubbleSort;
         else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc) 
         {
             *inFile = argv[i + 1];
@@ -144,15 +152,18 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
         } 
         else 
         {
-            fprintf(stderr, "Invalid option or missing argument: %s\n", argv[i]);
+            fprintf(stderr, invalidOptionErrorText, argv[i]);
             return MODE_ERROR;
         }
     }
-    if (*inFile == NULL)
+    if (*inFile == NULL || mode == MODE_ERROR)
     {
-        fprintf(stderr, "Invalid options, use: %s [-s|-r|-o|-h] -input <input_file> [-output <output_file>ЫЫЫЫЫЫЫЫ\n", argv[0]);
+        fprintf(stderr, invalidOptionErrorText, argv[0]);
         return MODE_ERROR;
     }
+
+    // fprintf(stderr, "output: %s\n", *outFile);
+    // fprintf(stderr, "infile: %s\n", *inFile);
 
     return mode;
 }
