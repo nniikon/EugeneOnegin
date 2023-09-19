@@ -190,7 +190,7 @@ static size_t partition(void* arr, int low, int high, size_t elemSize, int (*com
 {
     //printf("\t\tpartition:\n");
     
-    int pivoIndex = (high + low)/2;
+    int pivoIndex = high;
     while (low < high)
     {
         //printf("\tlow = %d, high = %d\n", low, high);
