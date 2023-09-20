@@ -15,7 +15,7 @@ enum Mode
 };
 
 
-static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile,
+static Mode parseArguments(int argc, char** argv, const char** inFile, const char** outFile,
                            void (**sort)(void*, size_t, size_t, int (*)(const void*, const void*)));
 static void help();
 static void runTests();
@@ -23,7 +23,7 @@ static void runTests();
 
 int main(int argc, char** argv)
 {
-    char*        inputFile_name = NULL;
+    const char* inputFile_name = NULL;
     const char* outputFIle_name = NULL;
     Error error = NO_ERROR;
     void (*sort)(void*, size_t, size_t, int (*)(const void*, const void*)) = my_qsort;
@@ -57,8 +57,9 @@ int main(int argc, char** argv)
     // MEM_WARNING: buffer was allocated.
     error = fileToNormilizedBuffer(inputFile_name, &buffer);
     if (error != NO_ERROR)
+    {
         return error;
-
+    }
     size_t nLines = 0;
     line* txt = NULL;
     // MEM_WARNING: txt was allocated.
@@ -104,7 +105,7 @@ int main(int argc, char** argv)
 
 
 // Parse command line arguments.
-static Mode parseArguments(int argc, char** argv, char** inFile, const char** outFile,
+static Mode parseArguments(int argc, char** argv, const char** inFile, const char** outFile,
                            void (**sort)(void*, size_t, size_t, int (*)(const void*, const void*)))
 {
     Mode mode = MODE_ORIGINAL; // Original   by default.
@@ -148,7 +149,7 @@ static Mode parseArguments(int argc, char** argv, char** inFile, const char** ou
             return MODE_ERROR;
         }
     }
-    if (*inFile == NULL || mode == MODE_ERROR)
+    if (*inFile == NULL)
     {
         fprintf(stderr, invalidOptionErrorText, argv[0]);
         return MODE_ERROR;
