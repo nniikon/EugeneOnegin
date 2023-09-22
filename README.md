@@ -1,4 +1,4 @@
-# Eugene Onegin README
+# Eugene Onegin
 <p align='center'>
     <img src="./media/giphy.gif" alt="drawing" width="400"/>
 </p>
