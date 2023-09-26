@@ -176,9 +176,9 @@ void bubbleSort(void* arr, size_t arrSize, size_t elemSize, int (*compare)(const
     for (size_t i = 0; i < arrSize; i++)
     {
         for (size_t j = 0; j < unsortedSize - 1; j++)
-        {
-            void* element1 = (void*)((size_t*)arr + j * elemSize);
-            void* element2 = (void*)((size_t*)arr + (j + 1) * elemSize);
+        {       
+            void* element1 = (void*)((size_t)arr +  j      * elemSize);
+            void* element2 = (void*)((size_t)arr + (j + 1) * elemSize);
 
             if (compare(element1, element2) > 0)
             {
