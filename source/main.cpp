@@ -128,12 +128,12 @@ static Mode parseArguments(int argc, char** argv, const char** inFile, const cha
     {
         if      (strcmp(argv[i], "-s") == 0)    mode = MODE_STRAIGHT_SORT; 
         else if (strcmp(argv[i], "-r") == 0)    mode = MODE_REVERSED_SORT; 
-        else if (strcmp(argv[i], "-o") == 0)    mode = MODE_ORIGINAL; 
+        else if (strcmp(argv[i], "-o") == 0)    mode = MODE_ORIGINAL;
         else if (strcmp(argv[i], "-t") == 0)    return MODE_TEST;
         else if (strcmp(argv[i], "-h") == 0)    return MODE_HELP;
         else if (strcmp(argv[i], "-qsort")  == 0)    *sort = my_qsort;
         else if (strcmp(argv[i], "-bubble") == 0)    *sort = bubbleSort;
-        else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc) 
+        else if (strcmp(argv[i], "-input") == 0 && i + 1 < argc)
         {
             *inFile = argv[i + 1];
             i++; // Skip the next argument
@@ -142,8 +142,8 @@ static Mode parseArguments(int argc, char** argv, const char** inFile, const cha
         {
             *outFile = argv[i + 1];
             i++; // Skip the next argument
-        } 
-        else 
+        }
+        else
         {
             fprintf(stderr, invalidOptionErrorText, argv[0]);
             return MODE_ERROR;
