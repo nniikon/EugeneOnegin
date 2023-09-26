@@ -177,5 +177,5 @@ static void help()
 static void runTests()
 {
     testCompareString();
-    testSorting(qsort, compare_ints);
+    testSorting(my_qsort, compare_ints);
 }
